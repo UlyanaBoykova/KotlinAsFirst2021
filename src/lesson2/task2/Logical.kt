@@ -18,9 +18,8 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = if (number / 1000 + number / 100 % 10 == number % 100 / 10 + number % 10)
-    {true}
-    else {false}
+fun isNumberHappy(number: Int): Boolean = (number / 1000 + number / 100 % 10 == number % 100 / 10 + number % 10)
+
 
 /**
  * Простая (2 балла)
@@ -30,8 +29,8 @@ fun isNumberHappy(number: Int): Boolean = if (number / 1000 + number / 100 % 10 
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    if ((x1 == x2) || (y1 == y2) || (x1 - x2) * (x1 - x2) == (y1 - y2) * (y1 - y2)) {true}
-    else {false}
+    ((x1 == x2) || (y1 == y2) || (x1 - x2) * (x1 - x2) == (y1 - y2) * (y1 - y2))
+
 
 
 /**
@@ -41,12 +40,14 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int =
-    if ((month == 4) || (month == 6) || (month == 9) || (month == 11)) {30}
-    else if ((month == 2) && (year % 4 == 0) && (year % 100 == 0) && (year % 400==0)) {29}
-    else if ((month == 2) && (year % 4 == 0) && (year % 100 != 0)) {29}
-    else if ((month == 2) && (year % 4 == 0) && (year % 100==0) && (year % 400 != 0)) {28}
-    else if ((month == 2) && (year % 4 != 0)) {28}
-else {31}
+    when{
+        ((month == 4) || (month == 6) || (month == 9) || (month == 11)) -> {30}
+        ((month == 2) && (year % 4 == 0) && (year % 100 == 0) && (year % 400==0)) -> {29}
+        ((month == 2) && (year % 4 == 0) && (year % 100 != 0)) -> {29}
+        ((month == 2) && (year % 4 == 0) && (year % 100 == 0) && (year % 400 != 0)) -> {28}
+        ((month == 2) && (year % 4 != 0)) -> {28}
+        else -> {31}
+        }
 
 /**
  * Простая (2 балла)
@@ -58,9 +59,8 @@ else {31}
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean =
-    if (Math.sqrt(sqr((x2 - x1)) + sqr((y2 - y1))) + r1 <= r2) {true}
-    else {false}
+): Boolean = (Math.sqrt(sqr((x2 - x1)) + sqr((y2 - y1))) + r1 <= r2)
+
 
 /**
  * Средняя (3 балла)
@@ -72,7 +72,6 @@ fun circleInside(
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
-    if ((a <= r && b <= s) || (a <= r && c <= s) || (b <= r && c <= s) ||
-    (b <= r && a <= s) || (c <= r && b <= s) || (c <= r && a <= s))
-    {true}
-    else {false}
+        ((a <= r && b <= s) || (a <= r && c <= s) || (b <= r && c <= s) ||
+        (b <= r && a <= s) || (c <= r && b <= s) || (c <= r && a <= s))
+

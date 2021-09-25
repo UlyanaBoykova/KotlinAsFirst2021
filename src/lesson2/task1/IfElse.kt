@@ -70,13 +70,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String =
-    if (((age > 20) || (age < 10)) && (age < 100) && (age % 10 == 1)) "$age год"
-    else if (((age > 20) || (age < 10)) && (age < 100) &&
-       ((age % 10 == 2) || (age % 10 == 3) || (age % 10 == 4))) "$age года"
-    else if(((age > 120) || (age < 110)) && (age > 100) && (age % 10 == 1)) "$age год"
-    else if (((age > 120) || (age < 110)) && (age > 100) &&
-       ((age % 10 == 2) || (age % 10 == 3) || (age % 10 == 4))) "$age года"
-            else "$age лет"
+    when{
+        (((age !in 10..20)) && (age < 100) && (age % 10 == 1)) -> "$age год"
+        (((age !in 10..20)) && (age < 100) && ((age % 10 == 2) || (age % 10 == 3) || (age % 10 == 4))) -> "$age года"
+        (((age !in 110..120)) && (age > 100) && (age % 10 == 1)) -> "$age год"
+        (((age !in 110..120)) && (age > 100) && ((age % 10 == 2) || (age % 10 == 3) || (age % 10 == 4))) -> "$age года"
+        else -> "$age лет"}
 
 
 /**
@@ -90,11 +89,13 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = if ((v1 * t1 + v2 * t2 + v3 * t3) / 2 <= v1 * t1) {((v1 * t1 + v2 * t2 + v3 * t3) / 2) / v1}
-   else if (((v1 * t1 + v2 * t2 + v3 * t3) / 2 > v1 * t1) && ((v1 * t1 + v2 * t2 + v3 * t3) / 2 <= v1 * t1 + v2 * t2))
-   {t1 + ((v1 * t1 + v2 * t2 + v3 * t3) / 2 - v1 * t1) / v2}
-   else {t1 + t2 + ((v1 * t1 + v2 * t2 + v3 * t3) / 2 - v1 * t1 - v2 * t2) / v3}
-
+): Double =
+    when{
+        ((v1 * t1 + v2 * t2 + v3 * t3) / 2 <= v1 * t1) -> {((v1 * t1 + v2 * t2 + v3 * t3) / 2) / v1}
+        (((v1 * t1 + v2 * t2 + v3 * t3) / 2 > v1 * t1) && ((v1 * t1 + v2 * t2 + v3 * t3) / 2 <= v1 * t1 + v2 * t2)) ->
+        {t1 + ((v1 * t1 + v2 * t2 + v3 * t3) / 2 - v1 * t1) / v2}
+        else -> {t1 + t2 + ((v1 * t1 + v2 * t2 + v3 * t3) / 2 - v1 * t1 - v2 * t2) / v3}
+}
 
 
 /**
@@ -111,11 +112,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int =
-    if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) {3}
-   else if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) || (kingY != rookY2))) {1}
-   else if (((kingX != rookX1) || (kingY != rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) {2}
-   else {0}
-
+    when{
+        (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> {3}
+        (((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) || (kingY != rookY2))) -> {1}
+        (((kingX != rookX1) || (kingY != rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> {2}
+        else -> {0}
+    }
 
 /**
  * Простая (2 балла)
@@ -131,13 +133,16 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = if (((bishopX - kingX) * (bishopX - kingX) == (bishopY - kingY) * (bishopY - kingY)) &&
-      ((kingX == rookX) || (kingY == rookY))) {3}
-      else if (((bishopX - kingX) * (bishopX - kingX) == (bishopY - kingY) * (bishopY - kingY)) &&
-      ((kingX != rookX) && (kingY != rookY))) {2}
-      else if (((bishopX - kingX) * (bishopX - kingX) != (bishopY - kingY) * (bishopY - kingY)) &&
-      ((kingX == rookX) || (kingY == rookY))) {1}
-      else {0}
+): Int =
+    when{
+        (((bishopX - kingX) * (bishopX - kingX) == (bishopY - kingY) * (bishopY - kingY)) &&
+        ((kingX == rookX) || (kingY == rookY))) -> {3}
+        (((bishopX - kingX) * (bishopX - kingX) == (bishopY - kingY) * (bishopY - kingY)) &&
+        ((kingX != rookX) && (kingY != rookY))) -> {2}
+        (((bishopX - kingX) * (bishopX - kingX) != (bishopY - kingY) * (bishopY - kingY)) &&
+        ((kingX == rookX) || (kingY == rookY))) -> {1}
+        else -> {0}
+        }
 
 /**
  * Простая (2 балла)
@@ -148,10 +153,10 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int =
-   if ((a > b + c) || (b > a + c) || (c > a + b) || (a <= 0) || (b <= 0) || (c <= 0)){-1}
-   else if ((a * a + b * b == c * c) || (a * a + c * c == b * b) || (b * b + c * c == a * a)) {1}
-   else if ((a * a + b * b < c * c) || (a * a + c * c < b * b) || (b * b + c * c < a * a)) {2}
-   else {0}
+    if ((a > b + c) || (b > a + c) || (c > a + b) || (a <= 0) || (b <= 0) || (c <= 0)) {-1}
+    else if ((a * a + b * b == c * c) || (a * a + c * c == b * b) || (b * b + c * c == a * a)) {1}
+    else if ((a * a + b * b < c * c) || (a * a + c * c < b * b) || (b * b + c * c < a * a)) {2}
+    else {0}
 
 /**
  * Средняя (3 балла)
@@ -162,9 +167,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
-    if (b <= d && a <= c) {b - c}
-    else if (d <= b && a <= c) {d - c}
-    else if (a <= d && d <= b) {d - a}
-    else if (b <= d && c <= a) {d - b}
-    else {-1}
+    when{
+        ((b <= d) && (a <= c)) -> {b - c}
+        ((d <= b) && (a <= c)) -> {d - c}
+        ((a <= d) && (d <= b)) -> {d - a}
+        ((b <= d) && (c <= a)) -> {d - b}
+        else -> {-1}
+        }
 
