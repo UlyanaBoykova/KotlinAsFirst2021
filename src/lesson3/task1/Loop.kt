@@ -2,8 +2,6 @@
 
 package lesson3.task1
 
-import jdk.nashorn.internal.runtime.JSType.toDouble
-import java.lang.Integer.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -110,7 +108,7 @@ fun minDivisor(n: Int): Int {
     var i: Int
     var min = 0
     var number = n
-    for(i in 2..n) {
+    for(i in 2..n / 2) {
         if (number % i == 0) {
             min = i
             break
