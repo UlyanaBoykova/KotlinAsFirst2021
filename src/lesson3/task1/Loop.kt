@@ -2,6 +2,11 @@
 
 package lesson3.task1
 
+import jdk.nashorn.internal.runtime.JSType.toDouble
+import java.lang.Integer.max
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -72,7 +77,17 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var count = 0
+    var number = n
+    while (number > 0) {
+        count++
+        number /= 10
+    }
+    if (n > 0) return count
+    else return 1
+}
+
 
 /**
  * Простая (2 балла)
@@ -80,21 +95,47 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    if (n <= 2) return 1
+    return fib(n - 1) + fib(n - 2)
+}
+
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var i: Int
+    var min = 0
+    var number = n
+    for(i in 2..n) {
+        if (number % i == 0) {
+            min = i
+            break
+        }
+    }
+    return min
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var i: Int
+    var max = n / 2
+    var number = n
+    for (i in n / 2 downTo 1) {
+        if (number % i == 0) {
+            max = i
+            break
+        }
+    }
+    return max
+}
 
 /**
  * Простая (2 балла)
@@ -112,7 +153,23 @@ fun maxDivisor(n: Int): Int = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var i: Int
+    var n = x
+    var kol = 0
+    while (n != 1) {
+        if (n % 2 == 0) {
+            kol++
+            n /= 2
+        }
+        else {
+            kol++
+            n *= 3
+            n++
+        }
+    }
+    return kol
+}
 
 /**
  * Средняя (3 балла)
@@ -120,7 +177,18 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var i: Int
+    var nok = 0
+    var k = min(n, m)
+    for(i in k..n * m) {
+        if ((i % m == 0) && (i % n == 0)) {
+            nok = i
+            break
+        }
+    }
+    return nok
+}
 
 /**
  * Средняя (3 балла)
@@ -129,7 +197,21 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var i: Int
+    var c: Boolean
+    var res = true
+    var k = min(n, m)
+    for(i in 2..k) {
+        c = ((m % i == 0) && (n % i == 0))
+        if (c == true) {
+            res = false
+            break
+        }
+    }
+    return res
+
+}
 
 /**
  * Средняя (3 балла)
@@ -138,7 +220,16 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var number = n
+    var k = 0
+    while (number > 0) {
+        k *= 10
+        k += number % 10
+        number /= 10
+    }
+    return k
+}
 
 /**
  * Средняя (3 балла)
@@ -149,7 +240,17 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var number = n
+    var k = 0
+    while (number > 0) {
+        k *= 10
+        k += number % 10
+        number /= 10
+    }
+    var res = (n == k)
+    return res
+}
 
 /**
  * Средняя (3 балла)
@@ -159,7 +260,20 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var number = n
+    var c = n % 10
+    var res = false
+    while (number > 0) {
+        var k = number % 10
+        if (k != c) {
+            res = true
+            break
+        }
+        number /= 10
+    }
+    return res
+}
 
 /**
  * Средняя (4 балла)
@@ -192,7 +306,35 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var number = n
+    var i: Int
+    var c = 0
+    var res = 0
+    var kol = 0
+    var v = 0
+    var s = 0
+    var j: Int
+    for (i in 1..n) {
+        var b = i * i
+        while (b > 0) {
+            b /= 10
+            c++
+        }
+        var k = i * i
+        for (j in c downTo 1) {
+            v = ((k / 10.0.pow( j - 1)) % 10).toInt()
+            k %= (10.0.pow(j - 1)).toInt()
+            kol++
+            if (kol == n) {
+                res = v
+                break
+            }
+        }
+        c = 0
+    }
+    return res
+}
 
 /**
  * Сложная (5 баллов)
@@ -203,4 +345,32 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var number = n
+    var i: Int
+    var c = 0
+    var res = 0
+    var kol = 0
+    var v = 0
+    var s = 0
+    var j: Int
+    for (i in 1..n) {
+        var b = fib(i)
+        while (b > 0) {
+            b /= 10
+            c++
+        }
+        var k = fib(i)
+        for (j in c downTo 1) {
+            v = ((k / 10.0.pow(j - 1)) % 10).toInt()
+            k %= (10.0.pow(j - 1)).toInt()
+            kol++
+            if (kol == n) {
+                res = v
+                break
+            }
+        }
+        c = 0
+    }
+    return res
+}
