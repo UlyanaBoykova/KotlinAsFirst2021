@@ -2,10 +2,7 @@
 
 package lesson3.task1
 
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
+import kotlin.math.*
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -78,11 +75,11 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var count = 0
     var number = n
-    while (number > 0) {
+    while (abs(number).toInt() > 0) {
         count++
         number /= 10
     }
-    if (n > 0) return count
+    if (n != 0) return count
     else return 1
 }
 
@@ -94,8 +91,12 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    if (n <= 2) return 1
-    return fib(n - 1) + fib(n - 2)
+    var i: Int
+    var k = 0
+    for (i in 1..n){
+        k = ((1 / sqrt(5.0)) * (((1 + sqrt(5.0)) / 2).pow(n) - ((1 - sqrt(5.0)) / 2).pow(n))).toInt()
+    }
+    return k
 }
 
 
@@ -108,7 +109,7 @@ fun minDivisor(n: Int): Int {
     var i: Int
     var min = 0
     var number = n
-    for(i in 2..n / 2) {
+    for (i in 2..n) {
         if (number % i == 0) {
             min = i
             break
@@ -179,10 +180,12 @@ fun lcm(m: Int, n: Int): Int {
     var i: Int
     var nok = 0
     var k = min(n, m)
-    for(i in k..n * m) {
-        if ((i % m == 0) && (i % n == 0)) {
-            nok = i
-            break
+    for (i in k..n * m) {
+        if (i % m == 0) {
+            if (i % n == 0) {
+                nok = i
+                break
+            }
         }
     }
     return nok
