@@ -181,8 +181,8 @@ fun lcm(m: Int, n: Int): Int {
     var nok = 0
     var k = min(n, m)
     for (i in k..n * m) {
-        if (i % m == 0) {
-            if (i % n == 0) {
+        if (i % max(m, n) == 0) {
+            if (i % k == 0) {
                 nok = i
                 break
             }
