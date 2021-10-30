@@ -3,6 +3,8 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -159,7 +161,14 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): List<Int> = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var i: Int
+    var element = 0
+    for (i in a.indices) {
+        element += a[i] * b[i]
+    }
+    return element
+}
 
 /**
  * Средняя (3 балла)
@@ -169,7 +178,14 @@ fun times(a: List<Int>, b: List<Int>): List<Int> = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var number = x.toDouble()
+    var k = 0
+    for (i in p.indices)
+        k += (p[i] * number.pow(i)).toInt()
+
+    return (k)
+}
 
 /**
  * Средняя (3 балла)
@@ -181,7 +197,14 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    var k = 0
+    for (i in 0 until list.size) {
+        k += list[i]
+        list[i] = k
+    }
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -190,7 +213,26 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var numbers: ArrayList<Int> = arrayListOf()
+    var i: Int
+    if (isPrime(n)) numbers.add(n)
+    else {
+        var k = n
+        for (i in 1..n / 2) {
+            var m = n
+            if (isPrime(i) && (n % i == 0)) {
+                while (m % i == 0) {
+                    numbers.add(i)
+                    m /= i
+                    k /= i
+                }
+            }
+            if (k == 1) break
+        }
+    }
+    return numbers
+}
 
 /**
  * Сложная (4 балла)
@@ -199,8 +241,11 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
-
+fun factorizeToString(n: Int): String {
+    var k = factorize(n)
+    var m = k.joinToString(separator = "*")
+    return m
+}
 /**
  * Средняя (3 балла)
  *
@@ -208,7 +253,18 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+
+fun convert(n: Int, base: Int): List<Int> {
+    var k: ArrayList<Int> = arrayListOf()
+    var b: Int
+    var a = n
+    while (a > 0) {
+        b = a % base
+        a /= base
+        k.add(0, b)
+    }
+    return k
+}
 
 /**
  * Сложная (4 балла)
@@ -221,7 +277,45 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var k = ""
+    var b: String
+    var a = n
+    while (a > 0) {
+        b = (a % base).toString()
+        when {
+            (b == "10") -> {b = "a"}
+            (b == "11") -> {b = "b"}
+            (b == "12") -> {b = "c"}
+            (b == "13") -> {b = "d"}
+            (b == "14") -> {b = "e"}
+            (b == "15") -> {b = "f"}
+            (b == "16") -> {b = "g"}
+            (b == "17") -> {b = "h"}
+            (b == "18") -> {b = "i"}
+            (b == "19") -> {b = "j"}
+            (b == "20") -> {b = "k"}
+            (b == "21") -> {b = "l"}
+            (b == "22") -> {b = "m"}
+            (b == "23") -> {b = "n"}
+            (b == "24") -> {b = "o"}
+            (b == "25") -> {b = "p"}
+            (b == "26") -> {b = "q"}
+            (b == "27") -> {b = "r"}
+            (b == "28") -> {b = "s"}
+            (b == "29") -> {b = "t"}
+            (b == "30") -> {b = "u"}
+            (b == "31") -> {b = "v"}
+            (b == "32") -> {b = "w"}
+            (b == "33") -> {b = "x"}
+            (b == "34") -> {b = "y"}
+            (b == "35") -> {b = "z"}
+        }
+        a /= base
+        k = b + k
+    }
+    return k
+}
 
 /**
  * Средняя (3 балла)
@@ -230,7 +324,14 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var k = 0
+    var i: Int
+    for (i in 0..digits.size - 1) {
+        k += digits[i] * (base.toDouble()).pow(digits.size - 1 - i).toInt()
+    }
+    return k
+}
 
 /**
  * Сложная (4 балла)
@@ -254,7 +355,45 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var k = ""
+    var num = n
+    while (num >= 1000) {
+        num -= 1000
+        k += "M"
+    }
+    while (num >= 500) {
+        num -= 500
+        k += "D"
+    }
+    while (num >= 100) {
+        num -= 100
+        k += "C"
+    }
+    while (num >= 50) {
+        num -= 50
+        k += "L"
+    }
+    while (num >= 10) {
+        num -= 10
+        k += "X"
+    }
+    while (num >= 5) {
+        num -= 5
+        k += "V"
+    }
+    while (num >= 1) {
+        num -= 1
+        k += "I"
+    }
+    k = k.replace("DCCCC", "CM")
+    k = k.replace("CCCC", "CD")
+    k = k.replace("LXXXX", "XC")
+    k = k.replace("XXXX", "XL")
+    k = k.replace("VIIII", "IX")
+    k = k.replace("IIII", "IV")
+    return k
+}
 
 /**
  * Очень сложная (7 баллов)

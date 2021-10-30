@@ -107,19 +107,12 @@ fun fib(n: Int): Int {
  */
 
 fun minDivisor(n: Int): Int {
-    var i: Int
-    var min = 0
+    var min = 2
     var number = n
-    for (i in 2..n / 2) {
-        if (number % i == 0) {
-            min = i
-            break
-        }
+    while (n % min != 0){
+        min += 1
     }
-    return if ((n > 2) && (min != 0)) min
-    else if ((n > 2) && (min == 0)) n
-    else 2
-
+    return min
 }
 
 /**
@@ -183,15 +176,15 @@ fun collatzSteps(x: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var i: Int
     var nok = 0
-    var k = min(n, m)
-    for (i in k..n * m) {
-        if (i % max(m, n) == 0) {
-            if (i % k == 0) {
-                nok = i
-                break
-            }
-        }
+    var c: Int
+    var m1 = m
+    var n1 = n
+    c = m1 * n1
+    while (m1 != n1) {
+        if (m1 > n1) m1 -= n1
+        else n1 -= m1
     }
+    nok = c / n1
     return nok
 }
 
