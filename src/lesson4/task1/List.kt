@@ -306,7 +306,7 @@ fun convertToString(n: Int, base: Int): String {
 fun decimal(digits: List<Int>, base: Int): Int {
     var k = 0
     var i: Int
-    for (i in 0..digits.size - 1) {
+    for (i in digits.indices) {
         k += digits[i] * (base.toDouble()).pow(digits.size - 1 - i).toInt()
     }
     return k

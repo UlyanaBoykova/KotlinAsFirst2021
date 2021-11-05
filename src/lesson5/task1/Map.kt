@@ -104,20 +104,20 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val list3 = mutableListOf<String>()
     val list4 = mutableListOf<String>()
     val list5 = mutableListOf<String>()
-    for ((stud, ozen) in grades) {
-        if (ozen == 2) {
+    for ((stud, ozenk) in grades) {
+        if (ozenk == 2) {
             list2.add(stud)
             map[2] = list2
         }
-        if (ozen == 3) {
+        if (ozenk == 3) {
             list3.add(stud)
             map[3] = list3
         }
-        if (ozen == 4) {
+        if (ozenk == 4) {
             list4.add(stud)
             map[4] = list4
         }
-        if (ozen == 5) {
+        if (ozenk == 5) {
             list5.add(stud)
             map[5] = list5
         }
