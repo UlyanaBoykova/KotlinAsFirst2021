@@ -280,7 +280,8 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
+fun convertToString(n: Int, base: Int): String = TODO()
+/**{
     var k = ""
     var b: String
     var a = n
@@ -295,6 +296,7 @@ fun convertToString(n: Int, base: Int): String {
     }
     return k
 }
+*/
 
 /**
  * Средняя (3 балла)
