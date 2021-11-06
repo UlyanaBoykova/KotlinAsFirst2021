@@ -236,7 +236,24 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val map = mutableMapOf<String, Double>()
+    var d = 0.0
+    var i = 0
+    for ((key, value) in stockPrices) {
+        for ((key1, value1) in stockPrices) {
+            if (key == key1) {
+                i++
+                d += value1
+            }
+        }
+        map[key] = d / i
+        d = 0.0
+        i = 0
+    }
+    return map
+}
+
 
 /**
  * Средняя (4 балла)
@@ -253,7 +270,21 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    val l: Int
+    val map = mutableMapOf<String, String>()
+    var n = 100000.0
+    var m = ""
+    val v: String
+    for ((i, j) in stuff) {
+        if (j.second < n) {
+            n = j.second
+            m = i
+        }
+        map[j.first] = m
+    }
+    return map[kind]
+}
 
 /**
  * Средняя (3 балла)
@@ -264,7 +295,16 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val f: Boolean
+    var letterSet = mutableSetOf<Char>()
+    for (letter in word) {
+        letterSet.add(letter.lowercaseChar())
+    }
+    f = letterSet == chars.toSet()
+
+    return f
+}
 
 /**
  * Средняя (4 балла)
@@ -347,7 +387,17 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val i: Int
+    val j: Int
+    var k = -1 to -1
+    for (i in list.indices) {
+        for (j in i + 1 until list.size) {
+            if (list[i] + list[j] == number) k = i to j
+        }
+    }
+    return k
+}
 
 /**
  * Очень сложная (8 баллов)
