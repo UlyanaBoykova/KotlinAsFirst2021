@@ -431,7 +431,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         map += key to a
     }
     val smap = map.toList().sortedBy { (k, v) -> v }.toMap()
-    for ((key, value) in smap) {
+    for ((key, value1) in smap) {
         for ((key1, pair) in treasures) {
             if ((key == key1) && (pair.first <= capacity) && (b + pair.first <= capacity)) {
                 b += pair.first
