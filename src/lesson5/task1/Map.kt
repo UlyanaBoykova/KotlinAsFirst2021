@@ -2,7 +2,6 @@
 
 package lesson5.task1
 
-import sun.security.ec.point.ProjectivePoint
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
