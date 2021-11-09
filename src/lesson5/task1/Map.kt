@@ -99,27 +99,13 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val map = mutableMapOf<Int, List<String>>()
-    val list2 = mutableListOf<String>()
-    val list3 = mutableListOf<String>()
-    val list4 = mutableListOf<String>()
-    val list5 = mutableListOf<String>()
-    for ((stud, ozenk) in grades) {
-        if (ozenk == 2) {
-            list2.add(stud)
-            map[2] = list2
+    val set = mutableSetOf<String>()
+    for ((key, value) in grades) {
+        for ((key1, value1) in grades) {
+            if (grades[key] == grades[key1]) set.add(key1)
         }
-        if (ozenk == 3) {
-            list3.add(stud)
-            map[3] = list3
-        }
-        if (ozenk == 4) {
-            list4.add(stud)
-            map[4] = list4
-        }
-        if (ozenk == 5) {
-            list5.add(stud)
-            map[5] = list5
-        }
+        map += value to set.toList()
+        set.clear()
     }
     return map
 }
@@ -175,16 +161,13 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Map<Strin
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val i: Int
     val j: Int
-    val list = mutableListOf<String>()
+    val set = mutableSetOf<String>()
     for (i in 0 until a.count()) {
         for (j in 0 until b.count()) {
-            if (a[i] == b[j]) list.add(a[i])
+            if (a[i] == b[j]) set.add(a[i])
         }
     }
-    for (i in 0 until list.count() - 1) {
-        if (list[i] == list[i + 1]) list.removeAt(i + 1)
-    }
-    return list
+    return set.toList()
 }
 
 /**
@@ -276,7 +259,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var m = ""
     val v: String
     for ((i, j) in stuff) {
-        if (j.second < n) {
+        if ((j.second < n) && (j.first == kind)) {
             n = j.second
             m = i
         }
@@ -295,13 +278,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val f: Boolean
+    var f: Boolean
     var letterSet = mutableSetOf<Char>()
     for (letter in word) {
         letterSet.add(letter.lowercaseChar())
     }
     f = letterSet == chars.toSet()
-
+    if (word == "") f = true
     return f
 }
 
@@ -424,17 +407,34 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     var i: Int
     var a: Int
     var b = 0
+    var d = 0
+    var e = 0
+    var c: Int
     var map = hashMapOf<String, Int>()
+    var map1 = hashMapOf<String, Int>()
     for ((key, pair) in treasures) {
         a = pair.first / pair.second
         map += key to a
+        c = pair.first
+        map1 += key to c
     }
     val smap = map.toList().sortedBy { (k, v) -> v }.toMap()
+    val smap1 = map1.toList().sortedBy { (k, v) -> v }.toMap()
     for ((key, value1) in smap) {
         for ((key1, pair) in treasures) {
             if ((key == key1) && (pair.first <= capacity) && (b + pair.first <= capacity)) {
                 b += pair.first
                 set.add(key1)
+                d = pair.first
+            }
+        }
+    }
+    for ((key, value) in smap1) {
+        for ((key1, pair) in treasures) {
+            if ((key == key1) && (smap1[key]!! <= capacity - b + d) && (pair.first > e)) {
+                e = pair.first
+                set.remove(set.last())
+                set.add(key)
             }
         }
     }
