@@ -279,12 +279,21 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     var f: Boolean
+    var i: Int
+    var j: Int
+    var l = ' '
     var letterSet = mutableSetOf<Char>()
+    var set = mutableSetOf<Char>()
     for (letter in word) {
         letterSet.add(letter.lowercaseChar())
     }
-    f = letterSet == chars.toSet()
-    if (word == "") f = true
+    for (i in 0..chars.size - 1){
+        for (j in 0..letterSet.toList().size - 1) {
+            if (chars[i] == letterSet.toList()[j]) l = chars[i]
+        }
+        if (l == chars[i]) set.add(l)
+    }
+    f = letterSet == set
     return f
 }
 
@@ -429,12 +438,14 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-    for ((key, value) in smap1) {
-        for ((key1, pair) in treasures) {
-            if ((key == key1) && (smap1[key]!! <= capacity - b + d) && (pair.first > e)) {
-                e = pair.first
-                set.remove(set.last())
-                set.add(key)
+    if (capacity != b) {
+        for ((key, value) in smap1) {
+            for ((key1, pair) in treasures) {
+                if ((key == key1) && (smap1[key]!! <= capacity - b + d) && (pair.first > e)) {
+                    e = pair.first
+                    set.remove(set.last())
+                    set.add(key)
+                }
             }
         }
     }
