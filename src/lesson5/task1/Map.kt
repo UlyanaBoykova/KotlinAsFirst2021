@@ -438,7 +438,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-    if (capacity >= b) {
+    if (capacity > b) {
         for ((key, value) in smap1) {
             for ((key1, pair) in treasures) {
                 if ((key == key1) && (smap1[key]!! <= capacity - b + d) && (pair.first > e)) {
