@@ -289,9 +289,9 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     }
     for (i in 0..chars.size - 1){
         for (j in 0..letterSet.toList().size - 1) {
-            if (chars[i] == letterSet.toList()[j]) l = chars[i]
+            if (chars[i].lowercaseChar() == letterSet.toList()[j]) l = chars[i].lowercaseChar()
         }
-        if (l == chars[i]) set.add(l)
+        if (l == chars[i].lowercaseChar()) set.add(l)
     }
     f = letterSet == set
     return f
@@ -438,7 +438,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-    if (capacity != b) {
+    if (capacity >= b) {
         for ((key, value) in smap1) {
             for ((key1, pair) in treasures) {
                 if ((key == key1) && (smap1[key]!! <= capacity - b + d) && (pair.first > e)) {
