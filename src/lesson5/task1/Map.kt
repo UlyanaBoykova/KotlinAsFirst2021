@@ -287,13 +287,14 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     for (letter in word) {
         letterSet.add(letter.lowercaseChar())
     }
-    for (i in 0..chars.size - 1){
-        for (j in 0..letterSet.toList().size - 1) {
+    for (i in chars.indices){
+        for (j in 0 until letterSet.toList().size) {
             if (chars[i].lowercaseChar() == letterSet.toList()[j]) l = chars[i].lowercaseChar()
         }
         if (l == chars[i].lowercaseChar()) set.add(l)
     }
     f = letterSet == set
+    if (word == "") f = true
     return f
 }
 
@@ -413,10 +414,11 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     var set = mutableSetOf<String>()
+    var set1 = mutableSetOf<String>()
     var i: Int
     var a: Int
     var b = 0
-    var d = 0
+    var d = 1000000
     var e = 0
     var c: Int
     var map = hashMapOf<String, Int>()
@@ -434,20 +436,15 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             if ((key == key1) && (pair.first <= capacity) && (b + pair.first <= capacity)) {
                 b += pair.first
                 set.add(key1)
+                set1.add(key1)
                 d = pair.first
+            } else if ((key == key1) && (pair.first <= capacity) && (b + pair.first > capacity) && (pair.first > d)) {
+                set.clear()
+                set.add(key1)
             }
         }
     }
-    if (capacity > b) {
-        for ((key, value) in smap1) {
-            for ((key1, pair) in treasures) {
-                if ((key == key1) && (smap1[key]!! <= capacity - b + d) && (pair.first > e)) {
-                    e = pair.first
-                    set.remove(set.last())
-                    set.add(key)
-                }
-            }
-        }
-    }
+
+
     return set
 }
