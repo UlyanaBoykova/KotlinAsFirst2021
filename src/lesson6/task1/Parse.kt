@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import com.sun.xml.internal.fastinfoset.util.StringArray
+import lesson2.task2.daysInMonth
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +77,42 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    var result = ""
+    var d = ""
+    var i = 0
+    var a = arrayOfNulls<String>(3)
+    for (part in parts) {
+        a[i] = part
+        i++
+    }
+    val x = a[0]?.toInt()
+    val y = a[2]?.toInt()
+    a[0] = a[0]?.let { twoDigitStr(it.toInt()) }
+    when {
+        a[1] == "января" -> {d = "01"}
+        a[1] == "февраля" -> {d = "02"}
+        a[1] == "марта" -> {d = "03"}
+        a[1] == "апреля" -> {d = "04"}
+        a[1] == "мая" -> {d = "05"}
+        a[1] == "июня" -> {d = "06"}
+        a[1] == "июля" -> {d = "07"}
+        a[1] == "августа" -> {d = "08"}
+        a[1] == "сентября" -> {d = "09"}
+        a[1] == "октября" -> {d = "10"}
+        a[1] == "ноября" -> {d = "11"}
+        a[1] == "декабря" -> {d = "12"}
+    }
+    if (y != null) {
+        if ((((d == "01") || (d == "03") || (d == "05") || (d == "07") || (d == "08") || (d == "10") ||
+                    (d == "12")) && (x!! <= 31)) ||
+            (((d == "04") || (d == "06") || (d == "09") || (d == "11")) && (x!! <= 30)) ||
+            ((d == "02") && (x!! <= 29) && (y % 4 == 0)) || ((d == "02") && (x!! <= 28) && (y % 4 != 0))
+        ) result = a[0].toString() + "." + d + "." + a[2]
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +124,51 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".")
+    var result = ""
+    var s = ""
+    var i = 0
+    var j = 0
+    val c: Int
+    for (part in parts) {
+        j++
+    }
+    var a = arrayOfNulls<String>(j)
+    for (part in parts) {
+        a[i] = part
+        i++
+    }
+
+    var x = a[0]?.toIntOrNull()
+    var d = a[1]?.toIntOrNull()
+    var y = a[2]?.toIntOrNull()
+    if (x == null) x = 1000
+    if (d == null) d = 1000
+    when {
+        a[1] == "01" -> {s = "января"}
+        a[1] == "02" -> {s = "февраля"}
+        a[1] == "03" -> {s = "марта"}
+        a[1] == "04" -> {s = "апреля"}
+        a[1] == "05" -> {s = "мая"}
+        a[1] == "06" -> {s = "июня"}
+        a[1] == "07" -> {s = "июля"}
+        a[1] == "08" -> {s = "августа"}
+        a[1] == "09" -> {s = "сентября"}
+        a[1] == "10" -> {s = "октября"}
+        a[1] == "11" -> {s = "ноября"}
+        a[1] == "12" -> {s = "декабря"}
+    }
+    if (y != null) {
+        if (((((d == 1) || (d == 3) || (d == 5) || (d == 7) || (d == 8) || (d == 10) ||
+                    (d == 12)) && (x <= 31)) ||
+                    (((d == 4) || (d == 6) || (d == 9) || (d == 11)) && (x <= 30)) ||
+                    ((d == 2) && (x <= 29) && (y % 4 == 0)) || ((d == 2) && (x <= 28) && (y % 4 != 0))) &&
+            (i == 3)
+        ) result = a[0]?.toInt().toString() + " " + s + " " + a[2]
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
