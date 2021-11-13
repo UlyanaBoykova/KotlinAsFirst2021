@@ -2,8 +2,7 @@
 
 package lesson6.task1
 
-import com.sun.xml.internal.fastinfoset.util.StringArray
-import lesson2.task2.daysInMonth
+
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
