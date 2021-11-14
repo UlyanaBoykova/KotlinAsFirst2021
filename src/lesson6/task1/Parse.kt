@@ -281,19 +281,26 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    var n = "+ $jumps "
+    var k = "$jumps-"
     val i: Int
+    var n = ""
     var a = ""
     var b = 0
     var c = 0
-    for (i in 0..n.length - 1) {
+    for (i in 0..k.length - 1) {
+        if (k[i] != ' ') n += k[i]
+    }
+    for (i in 0..n.length - 2) {
         if ((n[i] == '0') || (n[i] == '1') || (n[i] == '2') || (n[i] == '3') || (n[i] == '4') ||
             (n[i] == '5') || (n[i] == '6') || (n[i] == '7') || (n[i] == '8') || (n[i] == '9')
         )
             a += n[i]
-        else if ((n[i] == ' ') || (n[i] == '%') || (n[i] == '-') || (n[i] == '+')) {
+        else if (n[i] == '+') {
             b = if (a == "") 0
             else a.toInt()
+            a = ""
+        } else if ((n[i] == ' ') || (n[i] == '%') || (n[i] == '-')) {
+            b = 0
             a = ""
         } else {
             c = 0
