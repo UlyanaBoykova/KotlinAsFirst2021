@@ -122,16 +122,12 @@ fun bestLongJump(jumps: String): Int {
     var c = 0
     for (i in jumps.indices) {
         when {
-            ((jumps[i] == '0') || (jumps[i] == '1') || (jumps[i] == '2') || (jumps[i] == '3') || (jumps[i] == '4') ||
-                    (jumps[i] == '5') || (jumps[i] == '6') || (jumps[i] == '7') || (jumps[i] == '8') ||
-                    (jumps[i] == '9')) && (i == jumps.length - 1)
+            (jumps[i] in "0123456789") && (i == jumps.length - 1)
             -> {
                 a += jumps[i]
                 b = a.toInt()
             }
-            (jumps[i] == '0') || (jumps[i] == '1') || (jumps[i] == '2') || (jumps[i] == '3') || (jumps[i] == '4') ||
-                    (jumps[i] == '5') || (jumps[i] == '6') || (jumps[i] == '7') || (jumps[i] == '8') ||
-                    (jumps[i] == '9')
+            (jumps[i] in "0123456789")
             -> a += jumps[i]
             ((jumps[i] == ' ') || (jumps[i] == '%') || (jumps[i] == '-')) -> {
                 b = if (a == "") 0
@@ -171,9 +167,7 @@ fun bestHighJump(jumps: String): Int {
     }
     for (i in 0..n.length - 1) {
         when {
-            ((n[i] == '0') || (n[i] == '1') || (n[i] == '2') || (n[i] == '3') || (n[i] == '4') ||
-                    (n[i] == '5') || (n[i] == '6') || (n[i] == '7') || (n[i] == '8') || (n[i] == '9')
-                    ) -> a += n[i]
+            (n[i] in "0123456789") -> a += n[i]
             (n[i] == '+') -> {
                 b = if (a == "") 0
                 else a.toInt()
@@ -218,7 +212,7 @@ fun firstDuplicateIndex(str: String): Int {
     var k = 0
     var s = ""
     var l = ""
-    var n = 0
+    var n = -1
     var c = 0
     for (i in str.indices) {
         if ((str[i] != ' ') && (i != str.length - 1)) {
