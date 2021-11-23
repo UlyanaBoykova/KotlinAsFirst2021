@@ -196,16 +196,11 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
         map[key] = value
     }
     for ((key1, value1) in mapB) {
-        map[key1] = value1
-    }
-    for ((key, value) in mapA) {
-        for ((key1, value1) in mapB) {
-            if ((key == key1) && (value != value1)) {
-                s += "$value, $value1"
-                map[key] = s
-            }
+        if ((map[key1] == null) || (map[key1] == value1)) map[key1] = value1
+        else {
+            s = map[key1] + ", " + value1
+            map[key1] = s
         }
-        s = ""
     }
     return map
 }
@@ -224,16 +219,18 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     val map = mutableMapOf<String, Double>()
     var d = 0.0
     var i = 0
-    for ((key, value) in stockPrices) {
-        for ((key1, value1) in stockPrices) {
-            if (key == key1) {
-                i++
-                d += value1
+    for (k in stockPrices.indices) {
+        for ((key, value) in stockPrices) {
+            for ((key1, value1) in stockPrices) {
+                if (key == key1) {
+                    i++
+                    d += value1
+                }
             }
+            map[key] = d / i
+            d = 0.0
+            i = 0
         }
-        map[key] = d / i
-        d = 0.0
-        i = 0
     }
     return map
 }

@@ -116,23 +116,32 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    var n = "$jumps "
     val i: Int
     var a = ""
     var b = 0
     var c = 0
-    for (i in n.indices) {
-        if ((n[i] == '0') || (n[i] == '1') || (n[i] == '2') || (n[i] == '3') || (n[i] == '4') ||
-            (n[i] == '5') || (n[i] == '6') || (n[i] == '7') || (n[i] == '8') || (n[i] == '9')
-        )
-            a += n[i]
-        else if ((n[i] == ' ') || (n[i] == '%') || (n[i] == '-')) {
-            b = if (a == "") 0
-            else a.toInt()
-            a = ""
-        } else {
-            c = 0
-            break
+    for (i in jumps.indices) {
+        when {
+            ((jumps[i] == '0') || (jumps[i] == '1') || (jumps[i] == '2') || (jumps[i] == '3') || (jumps[i] == '4') ||
+                    (jumps[i] == '5') || (jumps[i] == '6') || (jumps[i] == '7') || (jumps[i] == '8') ||
+                    (jumps[i] == '9')) && (i == jumps.length - 1)
+            -> {
+                a += jumps[i]
+                b = a.toInt()
+            }
+            (jumps[i] == '0') || (jumps[i] == '1') || (jumps[i] == '2') || (jumps[i] == '3') || (jumps[i] == '4') ||
+                    (jumps[i] == '5') || (jumps[i] == '6') || (jumps[i] == '7') || (jumps[i] == '8') ||
+                    (jumps[i] == '9')
+            -> a += jumps[i]
+            ((jumps[i] == ' ') || (jumps[i] == '%') || (jumps[i] == '-')) -> {
+                b = if (a == "") 0
+                else a.toInt()
+                a = ""
+            }
+            else -> {
+                c = 0
+                break
+            }
         }
         if (b > c) c = b
     }
@@ -152,30 +161,32 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    var k = "$jumps-"
     val i: Int
     var n = ""
     var a = ""
     var b = 0
     var c = 0
-    for (i in 0..k.length - 1) {
-        if (k[i] != ' ') n += k[i]
+    for (i in jumps.indices) {
+        if (jumps[i] != ' ') n += jumps[i]
     }
-    for (i in 0..n.length - 2) {
-        if ((n[i] == '0') || (n[i] == '1') || (n[i] == '2') || (n[i] == '3') || (n[i] == '4') ||
-            (n[i] == '5') || (n[i] == '6') || (n[i] == '7') || (n[i] == '8') || (n[i] == '9')
-        )
-            a += n[i]
-        else if (n[i] == '+') {
-            b = if (a == "") 0
-            else a.toInt()
-            a = ""
-        } else if ((n[i] == ' ') || (n[i] == '%') || (n[i] == '-')) {
-            b = 0
-            a = ""
-        } else {
-            c = 0
-            break
+    for (i in 0..n.length - 1) {
+        when {
+            ((n[i] == '0') || (n[i] == '1') || (n[i] == '2') || (n[i] == '3') || (n[i] == '4') ||
+                    (n[i] == '5') || (n[i] == '6') || (n[i] == '7') || (n[i] == '8') || (n[i] == '9')
+                    ) -> a += n[i]
+            (n[i] == '+') -> {
+                b = if (a == "") 0
+                else a.toInt()
+                a = ""
+            }
+            ((n[i] == ' ') || (n[i] == '%') || (n[i] == '-')) -> {
+                b = 0
+                a = ""
+            }
+            else -> {
+                c = 0
+                break
+            }
         }
         if (b > c) c = b
     }
@@ -203,7 +214,28 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var k = 0
+    var s = ""
+    var l = ""
+    var n = 0
+    var c = 0
+    for (i in str.indices) {
+        if ((str[i] != ' ') && (i != str.length - 1)) {
+            if (s == "") {
+                k = i
+            }
+            s += str[i].lowercaseChar()
+        } else {
+            k = i
+            if (s == l) return n
+            l = s
+            s = ""
+            n = k - l.length
+        }
+    }
+    return -1
+}
 
 /**
  * Сложная (6 баллов)
