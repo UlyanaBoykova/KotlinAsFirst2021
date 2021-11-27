@@ -215,17 +215,29 @@ fun firstDuplicateIndex(str: String): Int {
     var n = -1
     var c = 0
     for (i in str.indices) {
-        if ((str[i] != ' ') && (i != str.length - 1)) {
-            if (s == "") {
+        when {
+            (i == str.length - 1) -> {
+                if (s == "") {
+                    k = i
+                }
+                s += str[i].lowercaseChar()
                 k = i
+                n = k - l.length
+                if (s == l) return n
             }
-            s += str[i].lowercaseChar()
-        } else {
-            k = i
-            if (s == l) return n
-            l = s
-            s = ""
-            n = k - l.length
+            ((str[i] != ' ') && (i != str.length - 1)) -> {
+                if (s == "") {
+                    k = i
+                }
+                s += str[i].lowercaseChar()
+            }
+            else -> {
+                k = i
+                if (s == l) return n
+                l = s
+                s = ""
+                n = k - l.length
+            }
         }
     }
     return -1
