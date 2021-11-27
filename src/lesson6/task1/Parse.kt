@@ -222,7 +222,7 @@ fun firstDuplicateIndex(str: String): Int {
                 }
                 s += str[i].lowercaseChar()
                 k = i
-                n = k - l.length
+                n = k - l.length - 1
                 if (s == l) return n
             }
             ((str[i] != ' ') && (i != str.length - 1)) -> {
