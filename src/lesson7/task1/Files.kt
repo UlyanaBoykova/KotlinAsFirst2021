@@ -500,10 +500,10 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         dl++
         writer.write(" ")
     }
-    if (lhv <= rhv) writer.write("$ostat")
+    if (lhv / rhv < 10) writer.write("$ostat")
     else {
         writer.write("$ostat")
-        ostat1 = (lhv % 10.0.pow(n - digitNumber(l))).toInt() / (10.0.pow(n - digitNumber(l) - 1)).toInt()
+        ostat1 = ((lhv % 10.0.pow(n - digitNumber(l))).toInt() / (10.0.pow(n - digitNumber(l) - 1))).toInt()
         writer.write("$ostat1")
         writer.appendLine()
     }
@@ -548,7 +548,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 ostat1 = lhv % (10.0.pow(n - sled)).toInt()
             }
             else -> {
-                ostat1 = lhv % (10.0.pow(n - sled)).toInt() / (10.0.pow(n - sled - 1)).toInt()
+                ostat1 = (lhv % (10.0.pow(n - sled)).toInt() / (10.0.pow(n - sled - 1))).toInt()
                 writer.write("$ostat1")
                 dl += digitNumber(ostat) + digitNumber(ostat1)
                 ostat = ostat * 10 + ostat1
