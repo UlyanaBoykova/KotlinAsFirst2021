@@ -2,7 +2,10 @@
 
 package lesson7.task1
 
+import lesson3.task1.digitNumber
 import java.io.File
+import java.util.*
+import kotlin.math.*
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -63,7 +66,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        if (((line.isNotEmpty()) && (line[0] != '_')) || (line.isEmpty())) {
+            writer.write(line)
+            writer.appendLine()
+        }
+    }
+    writer.close()
 }
 
 /**
@@ -75,7 +85,22 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val map = mutableMapOf<String, Int>()
+    var s = 0
+    for (i in substrings.indices) {
+        for (line in File(inputName).readLines()) {
+            val parts = line.split(" ")
+            for (part in parts) {
+                val regex = "$substrings[i]".toRegex(RegexOption.IGNORE_CASE)
+                if (regex.containsMatchIn(part)) s++
+            }
+        }
+        map[substrings[i]] = s
+        s = 0
+    }
+    return map
+}
 
 
 /**
@@ -449,6 +474,106 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var s = 0
+    var l = 0
+    var vychet = 0
+    var poluch = 0
+    var ostat = 0
+    var ostat1 = 0
+    var dl = 0
+    writer.write(" $lhv | $rhv")    // первая строка
+    writer.appendLine()
+
+
+    val n = digitNumber(lhv)
+    var k = n - 1
+    if (lhv < rhv) {
+        l = (lhv / (10.0.pow(k))).toInt() // число доступное для деления
+        s = l / rhv
+    } else {
+        while (s < 1) { // промежуточное частное
+            l = (lhv / (10.0.pow(k))).toInt() // число доступное для деления
+            s = l / rhv
+            k--
+        }
+    }
+    vychet = s * rhv
+    writer.write("-$vychet")
+    for (i in 1..n - digitNumber(vychet) + 3) writer.write(" ")
+    poluch = lhv / rhv
+    writer.write("$poluch")
+    writer.appendLine()
+
+
+    for (i in 1..digitNumber(vychet) + 1) writer.write("-")
+    writer.appendLine()
+
+
+    ostat = l - vychet
+    for (i in 1..digitNumber(vychet) + 1 - digitNumber(ostat)) {
+        dl++
+        writer.write(" ")
+    }
+    if (lhv < rhv) writer.write("$ostat")
+    else {
+        writer.write("$ostat")
+        ostat1 = (lhv % 10.0.pow(n - digitNumber(l))).toInt() / (10.0.pow(n - digitNumber(l) - 1)).toInt()
+        writer.write("$ostat1")
+        writer.appendLine()
+    }
+    dl += digitNumber(ostat) + digitNumber(ostat1)
+    ostat = ostat * 10 + ostat1
+    var sled = digitNumber(l)
+
+    //---------------------------------------------------------
+
+    var dl1 = 0
+    var dl2 = 0
+    while (n - sled > 0) {
+        sled++
+        vychet = (ostat / rhv) * rhv
+        for (i in 1..dl - 1 - digitNumber(vychet)) {
+            dl1++
+            writer.write(" ")
+        }
+        writer.write("-$vychet")
+        writer.appendLine()
+        dl = 0
+
+        for (i in 1..dl1) writer.write(" ")
+        for (i in 1..digitNumber(vychet) + 1) writer.write("-")
+        writer.appendLine()
+
+        ostat -= vychet
+        for (i in 1..dl1 - digitNumber(ostat) + digitNumber(vychet) + 1) {
+            dl++
+            writer.write(" ")
+        }
+        writer.write("$ostat")
+        when {
+            (n - sled == 1) -> {
+                ostat1 = lhv % (10.0.pow(n - sled)).toInt()
+                writer.write("$ostat1")
+                dl += digitNumber(ostat) + digitNumber(ostat1)
+                ostat = ostat * 10 + ostat1
+                writer.appendLine()
+            }
+            (n - sled == 0) -> {
+                ostat1 = lhv % (10.0.pow(n - sled)).toInt()
+            }
+            else -> {
+                ostat1 = lhv % (10.0.pow(n - sled)).toInt() / (10.0.pow(n - sled - 1)).toInt()
+                writer.write("$ostat1")
+                dl += digitNumber(ostat) + digitNumber(ostat1)
+                ostat = ostat * 10 + ostat1
+                writer.appendLine()
+            }
+        }
+        dl1 = 0
+    }
+
+    writer.close()
+
 }
 
