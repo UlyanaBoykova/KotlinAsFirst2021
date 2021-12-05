@@ -524,11 +524,11 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         writer.write("-$vychet")
         writer.appendLine()
-        dl = 0
 
-        for (i in 1..dl1) writer.write(" ")
-        for (i in 1..digitNumber(vychet) + 1) writer.write("-")
+        for (i in 1..min(dl1, dl - digitNumber(ostat))) writer.write(" ")
+        for (i in 1..max(digitNumber(vychet) + 1, digitNumber(ostat))) writer.write("-")
         writer.appendLine()
+        dl = 0
 
         ostat -= vychet
         for (i in 1..dl1 - digitNumber(ostat) + digitNumber(vychet) + 1) {
