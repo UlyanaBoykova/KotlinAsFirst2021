@@ -85,22 +85,7 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val map = mutableMapOf<String, Int>()
-    var s = 0
-    for (i in substrings.indices) {
-        for (line in File(inputName).readLines()) {
-            val parts = line.split(" ")
-            for (part in parts) {
-                val regex = "$substrings[i]".toRegex(RegexOption.IGNORE_CASE)
-                if (regex.containsMatchIn(part)) s++
-            }
-        }
-        map[substrings[i]] = s
-        s = 0
-    }
-    return map
-}
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 
 
 /**
@@ -515,7 +500,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         dl++
         writer.write(" ")
     }
-    if (lhv < rhv) writer.write("$ostat")
+    if (lhv <= rhv) writer.write("$ostat")
     else {
         writer.write("$ostat")
         ostat1 = (lhv % 10.0.pow(n - digitNumber(l))).toInt() / (10.0.pow(n - digitNumber(l) - 1)).toInt()
