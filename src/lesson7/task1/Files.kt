@@ -462,15 +462,13 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var s = 0
     var l = 0
+    var m = 0
     var vychet = 0
     var poluch = 0
     var ostat = 0
     var ostat1 = 0
     var dl = 0
-    writer.write(" $lhv | $rhv")    // первая строка
-    writer.appendLine()
-
-
+    var sled = 0
     val n = digitNumber(lhv)
     var k = n - 1
     if (lhv < rhv) {
@@ -484,24 +482,43 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
     }
     vychet = s * rhv
+    if ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) {
+        m = 1
+        writer.write("$lhv | $rhv")    // первая строка
+        writer.appendLine()
+        for (i in 1..digitNumber(lhv) - digitNumber(vychet) - 1) {
+            writer.write(" ")
+            m++
+        }
+    } else {
+        writer.write(" $lhv | $rhv")    // первая строка
+        writer.appendLine()
+    }
     writer.write("-$vychet")
-    for (i in 1..n - digitNumber(vychet) + 3) writer.write(" ")
+    for (i in 1..n - digitNumber(vychet) - m + 3) writer.write(" ")
     poluch = lhv / rhv
     writer.write("$poluch")
     writer.appendLine()
 
 
-    for (i in 1..digitNumber(vychet) + 1) writer.write("-")
-    writer.appendLine()
+    if ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) {
+        for (i in 1..digitNumber(lhv)) writer.write("-")
+        writer.appendLine()
+    } else {
+        for (i in 1..digitNumber(vychet) + 1) writer.write("-")
+        writer.appendLine()
+    }
 
-
-    ostat = l - vychet
+    if ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) {
+        ostat = lhv - vychet
+    } else ostat = l - vychet
     for (i in 1..digitNumber(vychet) + 1 - digitNumber(ostat)) {
         dl++
         writer.write(" ")
     }
-    if (lhv / rhv < 10) writer.write("$ostat")
-    else {
+    if (lhv / rhv < 10) {
+        writer.write("$ostat")
+    } else {
         writer.write("$ostat")
         ostat1 = ((lhv % 10.0.pow(n - digitNumber(l))).toInt() / (10.0.pow(n - digitNumber(l) - 1))).toInt()
         writer.write("$ostat1")
@@ -509,7 +526,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     }
     dl += digitNumber(ostat) + digitNumber(ostat1)
     ostat = ostat * 10 + ostat1
-    var sled = digitNumber(l)
+    sled = digitNumber(l)
+    if (lhv / rhv < 10) sled = 1000
 
     //---------------------------------------------------------
 
@@ -561,4 +579,5 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     writer.close()
 
 }
+
 
