@@ -4,7 +4,6 @@ package lesson7.task1
 
 import lesson3.task1.digitNumber
 import java.io.File
-import java.util.*
 import kotlin.math.*
 
 // Урок 7: работа с файлами
@@ -393,8 +392,95 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlLists(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var j = 0
+    var s = ""
+    var str1 = ""
+    var ul = 0
+    var ol = 0
+    var li = 0
+    var n = 0
+    var prob = 0
+    var prob1 = 0
+    var nomstr = 0
+    var mas: ArrayList<Int> = arrayListOf()
+    var str: ArrayList<String> = arrayListOf()
+    var spisok: ArrayList<Int> = arrayListOf()
+    writer.write("<html><body><p>")
+    for (line in File(inputName).readLines()) {
+        for (i in line.indices) {
+            if ((i > 1) && (line[i - 1] == ' ') && (line[i - 2] == '*')) s += line[i]
+            if ((i > 2) && (line[i - 1] == ' ') && (line[i - 2] == '.') && (line[i - 3] in "123456789")) s += line[i]
+            if ((s != "") && (s != line[i].toString())) s += line[i]
+        }
+        while (line[prob] == ' ') {
+            prob++
+        }
+        if (line[prob] == '*') spisok.add(1)
+        else spisok.add(0)
+        str.add(s)
+        mas.add(prob)
+        nomstr++
+        prob = 0
+        s = ""
+    }
+    nomstr -= 1
+    for (i in 0..nomstr) {
+        if ((i == 0) && (spisok[i + 1] == 1)) writer.write("<ul>")
+        if ((i == 0) && (spisok[i + 1] == 0)) writer.write("<ol>")
+        writer.write("<li>")
+        str1 = str[i]
+        writer.write("$str1")
+        if (((i != nomstr) && ((mas[i] - mas[i + 1] == 4) || (mas[i] == mas[i + 1]))) || (i == nomstr)) {
+            writer.write("</li>")
+        }
+        if ((i != nomstr) && (mas[i + 1] < mas[i])) {
+            var mas1 = mas[i]
+            for (j in 1..(mas[i] - mas[i + 1]) / 4) {
+                var l = 0
+                mas1 -= 4
+                for (k in i - 1 downTo 0) {
+                    if (mas1 == mas[k]) {
+                        l = k
+                        break
+                    }
+                }
+                if (spisok[l + 1] == 0) writer.write("</ol></li>")
+                if (spisok[l + 1] == 1) writer.write("</ul></li>")
+            }
+        }
+        if ((i == nomstr) && (0 < mas[i])) {
+            var mas1 = mas[i]
+            for (j in 1..mas[i] / 4) {
+                var l = 0
+                mas1 -= 4
+                for (k in i - 1 downTo 0) {
+                    if (mas1 == mas[k]) {
+                        l = k
+                        break
+                    }
+                }
+                if ((l + 1 <= nomstr) && (spisok[l + 1] == 0)) writer.write("</ol></li>")
+                if ((l + 1 <= nomstr) && (spisok[l + 1] == 1)) writer.write("</ul></li>")
+            }
+        }
+        if ((i != nomstr) && (spisok[i + 1] == 1) && (mas[i] < mas[i + 1])) {
+            writer.write("<ul>")
+            ul += 1
+            prob1 = mas[i + 1] - mas[i]
+        }
+        if ((i != nomstr) && (spisok[i + 1] == 0) && (mas[i] < mas[i + 1])) {
+            writer.write("<ol>")
+            ol += 1
+            prob1 = mas[i + 1] - mas[i]
+        }
+    }
+    if (spisok[0] == 1) writer.write("</ul>")
+    if (spisok[0] == 0) writer.write("</ol>")
+    writer.write("</p></body></html>")
+    writer.close()
 }
+
 
 /**
  * Очень сложная (30 баллов)
