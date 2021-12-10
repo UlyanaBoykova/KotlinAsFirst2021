@@ -393,15 +393,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  */
 fun markdownToHtmlLists(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var j = 0
     var s = ""
     var str1 = ""
-    var ul = 0
-    var ol = 0
-    var li = 0
-    var n = 0
     var prob = 0
-    var prob1 = 0
     var nomstr = 0
     var mas: ArrayList<Int> = arrayListOf()
     var str: ArrayList<String> = arrayListOf()
@@ -425,9 +419,9 @@ fun markdownToHtmlLists(inputName: String, outputName: String) {
         s = ""
     }
     nomstr -= 1
+    if (spisok[0] == 1) writer.write("<ul>")
+    if (spisok[0] == 0) writer.write("<ol>")
     for (i in 0..nomstr) {
-        if ((i == 0) && (spisok[i + 1] == 1)) writer.write("<ul>")
-        if ((i == 0) && (spisok[i + 1] == 0)) writer.write("<ol>")
         writer.write("<li>")
         str1 = str[i]
         writer.write("$str1")
@@ -464,16 +458,9 @@ fun markdownToHtmlLists(inputName: String, outputName: String) {
                 if ((l + 1 <= nomstr) && (spisok[l + 1] == 1)) writer.write("</ul></li>")
             }
         }
-        if ((i != nomstr) && (spisok[i + 1] == 1) && (mas[i] < mas[i + 1])) {
-            writer.write("<ul>")
-            ul += 1
-            prob1 = mas[i + 1] - mas[i]
-        }
-        if ((i != nomstr) && (spisok[i + 1] == 0) && (mas[i] < mas[i + 1])) {
-            writer.write("<ol>")
-            ol += 1
-            prob1 = mas[i + 1] - mas[i]
-        }
+        if ((i != nomstr) && (spisok[i + 1] == 1) && (mas[i] < mas[i + 1])) writer.write("<ul>")
+        if ((i != nomstr) && (spisok[i + 1] == 0) && (mas[i] < mas[i + 1])) writer.write("<ol>")
+
     }
     if (spisok[0] == 1) writer.write("</ul>")
     if (spisok[0] == 0) writer.write("</ol>")
@@ -546,8 +533,8 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var s = 0
-    var l = 0
+    var vremenchastnoe = 0
+    var pervoevychet = 0
     var m = 0
     var vychet = 0
     var poluch = 0
@@ -555,24 +542,24 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var ostat1 = 0
     var dl = 0
     var sled = 0
-    val n = digitNumber(lhv)
-    var k = n - 1
+    val koltsifr = digitNumber(lhv)
+    var k = koltsifr - 1
     if (lhv < rhv) {
-        l = (lhv / (10.0.pow(k))).toInt() // число доступное для деления
-        s = l / rhv
+        pervoevychet = (lhv / (10.0.pow(k))).toInt() // число доступное для деления
+        vremenchastnoe = pervoevychet / rhv
     } else {
-        while (s < 1) { // промежуточное частное
-            l = (lhv / (10.0.pow(k))).toInt() // число доступное для деления
-            s = l / rhv
+        while (vremenchastnoe < 1) { // промежуточное частное
+            pervoevychet = (lhv / (10.0.pow(k))).toInt() // число доступное для деления
+            vremenchastnoe = pervoevychet / rhv
             k--
         }
     }
-    vychet = s * rhv
+    vychet = vremenchastnoe * rhv
     if ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) {
         m = 1
         writer.write("$lhv | $rhv")    // первая строка
         writer.appendLine()
-        for (i in 1..digitNumber(lhv) - digitNumber(vychet) - 1) {
+        for (i in 1 until digitNumber(lhv) - digitNumber(vychet)) {
             writer.write(" ")
             m++
         }
@@ -581,7 +568,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.appendLine()
     }
     writer.write("-$vychet")
-    for (i in 1..n - digitNumber(vychet) - m + 3) writer.write(" ")
+    for (i in 1..koltsifr - digitNumber(vychet) - m + 3) writer.write(" ")
     poluch = lhv / rhv
     writer.write("$poluch")
     writer.appendLine()
@@ -597,7 +584,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
     if ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) {
         ostat = lhv - vychet
-    } else ostat = l - vychet
+    } else ostat = pervoevychet - vychet
     for (i in 1..digitNumber(vychet) + 1 - digitNumber(ostat)) {
         dl++
         writer.write(" ")
@@ -606,20 +593,21 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.write("$ostat")
     } else {
         writer.write("$ostat")
-        ostat1 = ((lhv % 10.0.pow(n - digitNumber(l))).toInt() / (10.0.pow(n - digitNumber(l) - 1))).toInt()
+        ostat1 = ((lhv % 10.0.pow(koltsifr - digitNumber(pervoevychet))).toInt() /
+                (10.0.pow(koltsifr - digitNumber(pervoevychet) - 1))).toInt()
         writer.write("$ostat1")
         writer.appendLine()
     }
     dl += digitNumber(ostat) + digitNumber(ostat1)
     ostat = ostat * 10 + ostat1
-    sled = digitNumber(l)
+    sled = digitNumber(pervoevychet)
     if (lhv / rhv < 10) sled = 1000
 
     //---------------------------------------------------------
 
     var dl1 = 0
     var dl2 = 0
-    while (n - sled > 0) {
+    while (koltsifr - sled > 0) {
         sled++
         vychet = (ostat / rhv) * rhv
         for (i in 1..dl - 1 - digitNumber(vychet)) {
@@ -641,18 +629,18 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         writer.write("$ostat")
         when {
-            (n - sled == 1) -> {
-                ostat1 = lhv % (10.0.pow(n - sled)).toInt()
+            (koltsifr - sled == 1) -> {
+                ostat1 = lhv % (10.0.pow(koltsifr - sled)).toInt()
                 writer.write("$ostat1")
                 dl += digitNumber(ostat) + digitNumber(ostat1)
                 ostat = ostat * 10 + ostat1
                 writer.appendLine()
             }
-            (n - sled == 0) -> {
-                ostat1 = lhv % (10.0.pow(n - sled)).toInt()
+            (koltsifr - sled == 0) -> {
+                ostat1 = lhv % (10.0.pow(koltsifr - sled)).toInt()
             }
             else -> {
-                ostat1 = (lhv % (10.0.pow(n - sled)).toInt() / (10.0.pow(n - sled - 1))).toInt()
+                ostat1 = (lhv % (10.0.pow(koltsifr - sled)).toInt() / (10.0.pow(koltsifr - sled - 1))).toInt()
                 writer.write("$ostat1")
                 dl += digitNumber(ostat) + digitNumber(ostat1)
                 ostat = ostat * 10 + ostat1
