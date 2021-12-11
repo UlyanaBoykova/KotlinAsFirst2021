@@ -199,9 +199,9 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     var radius1 = 0
     if ((a == b) && (b == c)) return Hexagon(a, 0)
     else {
-        for (radius in 1..100) {
-            for (a1 in 0..100) {
-                for (b1 in 0..100) {
+        for (radius in 1..1000) {
+            for (a1 in -1000..1000) {
+                for (b1 in -1000..1000) {
                     if (((a.x == b.x) && (b.x == c.x))) {
                         f = true
                         radius1 = max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y))
