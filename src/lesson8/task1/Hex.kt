@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 
 package lesson8.task1
-
+import kotlin.math.*
 /**
  * Точка (гекс) на шестиугольной сетке.
  * Координаты заданы как в примере (первая цифра - y, вторая цифра - x)
@@ -28,7 +28,7 @@ package lesson8.task1
  * Более подробно про шестиугольные системы координат можно почитать по следующей ссылке:
  *   https://www.redblobgames.com/grids/hexagons/
  */
-data class HexPoint(val x: Int, val y: Int) {
+data class HexPoint(var x: Int, var y: Int) {
     /**
      * Средняя (3 балла)
      *
@@ -192,7 +192,64 @@ fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> = TODO()
  *
  * Если все три точки совпадают, вернуть шестиугольник нулевого радиуса с центром в данной точке.
  */
-fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? = TODO()
+fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
+    var a11 = 0
+    var b11 = 0
+    var f = false
+    var radius1 = 0
+    if ((a == b) && (b == c)) return Hexagon(a, 0)
+    else {
+        for (radius in 1..100) {
+            for (a1 in 0..100) {
+                for (b1 in 0..100) {
+                    if (((a.x == b.x) && (b.x == c.x))) {
+                        f = true
+                        radius1 = max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y))
+                        b11 = min(a.y, min(b.y, c.y))
+                        a11 = a.x + radius1
+                        break
+                    }
+                    if (((a.y == b.y) && (b.y == c.y))) {
+                        f = true
+                        radius1 = max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x))
+                        b11 = a.y + radius1
+                        a11 = min(a.x, min(b.x, c.x))
+                        break
+                    }
+                    if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
+                                ((a.y == -a.x + b1 + a1 - radius) && (a.x in a1 - radius..a1)) ||
+                                ((a.y == b1 - radius) && (a.x in a1..a1 + radius)) ||
+                                ((a.y == b1 + radius) && (a.x in a1 - radius..a1)) ||
+                                ((a.x == a1 - radius) && (a.y in b1..b1 + radius)) ||
+                                ((a.x == a1 + radius) && (a.y in b1 - radius..b1))) &&
+
+                        (((b.y == -b.x + b1 + a1 + radius) && (b.x in a1..a1 + radius)) ||
+                                ((b.y == -b.x + b1 + a1 - radius) && (b.x in a1 - radius..a1)) ||
+                                ((b.y == b1 - radius) && (b.x in a1..a1 + radius)) ||
+                                ((b.y == b1 + radius) && (b.x in a1 - radius..a1)) ||
+                                ((b.x == a1 - radius) && (b.y in b1..b1 + radius)) ||
+                                ((b.x == a1 + radius) && (b.y in b1 - radius..b1))) &&
+
+                        (((c.y == -c.x + b1 + a1 + radius) && (c.x in a1..a1 + radius)) ||
+                                ((c.y == -c.x + b1 + a1 + radius) && (c.x in a1 - radius..a1)) ||
+                                ((c.y == b1 - radius) && (c.x in a1..a1 + radius)) ||
+                                ((c.y == b1 + radius) && (c.x in a1 - radius..a1)) ||
+                                ((c.x == a1 - radius) && (c.y in b1..b1 + radius)) ||
+                                ((c.x == a1 + radius) && (c.y in b1 - radius..b1)))
+                    ) {
+                        f = true
+                        a11 = a1
+                        b11 = b1
+                        radius1 = radius
+                        break
+                    }
+                }
+            }
+        }
+        return if (!f) null
+        else Hexagon(HexPoint(a11, b11), radius1)
+    }
+}
 
 /**
  * Очень сложная (20 баллов)

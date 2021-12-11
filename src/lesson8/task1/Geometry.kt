@@ -14,7 +14,7 @@ import kotlin.math.sqrt
 /**
  * Точка на плоскости
  */
-data class Point(val x: Double, val y: Double) {
+data class Point(var x: Double, var y: Double) {
     /**
      * Пример
      *
@@ -73,7 +73,7 @@ class Triangle private constructor(private val points: Set<Point>) {
 /**
  * Окружность с заданным центром и радиусом
  */
-data class Circle(val center: Point, val radius: Double) {
+data class Circle(val center: Point, var radius: Double) {
     /**
      * Простая (2 балла)
      *
@@ -195,7 +195,19 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val a1 = b.x - a.x
+    val b1 = b.y - a.y
+    val c1 = c.x - a.x
+    val d = c.y - a.y
+    val e = a1 * (a.x + b.x) + b1 * (a.y + b.y)
+    val f = c1 * (a.x + c.x) + d * (a.y + c.y)
+    val g = 2 * (a1 * (c.y - b.y) - b1 * (c.x - b.x))
+    val cx = (d * e - b1 * f) / g
+    val cy = (a1 * f - c1 * e) / g
+    val k = Point(cx, cy)
+    return Circle(center = k, radius = (sqrt(sqr(cx - a.x) + sqr(cy - a.y))))
+}
 
 /**
  * Очень сложная (10 баллов)
