@@ -1,7 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
 
 package lesson8.task1
+
 import kotlin.math.*
+
 /**
  * Точка (гекс) на шестиугольной сетке.
  * Координаты заданы как в примере (первая цифра - y, вторая цифра - x)
@@ -197,11 +199,21 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     var b11 = 0
     var f = false
     var radius1 = 0
+    val maxx1 = max(a.x, max(b.x, c.x))
+    val minx1 = min(a.x, min(b.x, c.x))
+    val maxy1 = max(a.y, max(b.y, c.y))
+    val miny1 = min(a.y, min(b.y, c.y))
+    val rasnizamax =
+        max(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)), max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
+    val rasnizamin = min(
+        min(abs(a.x - b.x), min(abs(a.x - c.x), abs(b.x - c.x))),
+        min(abs(a.y - b.y), min(abs(a.y - c.y), abs(b.y - c.y)))
+    )
     if ((a == b) && (b == c)) return Hexagon(a, 0)
     else {
-        for (a1 in -500..500) {
-            for (b1 in -400..400) {
-                for (radius in 1..400) {
+        for (radius in rasnizamin..rasnizamax) {
+            for (b1 in maxy1 - radius - 2..miny1 + 2 + radius) {
+                for (a1 in maxx1 - radius - 2..minx1 + 2 + radius) {
                     if (((a.x == b.x) && (b.x == c.x))) {
                         f = true
                         radius1 = max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y))
