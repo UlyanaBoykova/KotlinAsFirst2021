@@ -210,6 +210,12 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
         min(abs(a.y - b.y), min(abs(a.y - c.y), abs(b.y - c.y)))
     )
     if ((a == b) && (b == c)) return Hexagon(a, 0)
+    else if ((a == b) && (b != c))
+        return Hexagon(a, max(abs(a.x - c.x) / 2 + abs(a.x - c.x) % 2, abs(a.y - c.y) / 2 + abs(a.y - c.y) % 2))
+    else if ((a == c) && (c != b))
+        return Hexagon(a, max(abs(b.x - c.x) / 2 + abs(b.x - c.x) % 2, abs(b.y - c.y) / 2 + abs(b.y - c.y) % 2))
+    else if ((c == b) && (a != c))
+        return Hexagon(a, max(abs(a.x - c.x) / 2 + abs(a.x - c.x) % 2, abs(a.y - c.y) / 2 + abs(a.y - c.y) % 2))
     else {
         for (radius in rasnizamin..rasnizamax) {
             for (b1 in maxy1 - radius - 2..miny1 + 2 + radius) {
