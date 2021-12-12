@@ -235,12 +235,47 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
             a11 = min(a.x, min(b.x, c.x))
             return Hexagon(HexPoint(a11, b11), radius1)
         }
+        (((a.y == b.y) && (b.y != c.y) && (abs(a.y) >= 300))) -> {
+            radius1 = abs(c.y - b.y) / 2 + abs(c.y - b.y) / 2
+            b11 = a.y + radius1
+            a11 = min(a.x, min(b.x, c.x))
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        (((a.y == c.y) && (b.y != c.y) && (abs(a.y) >= 300))) -> {
+            radius1 = abs(b.y - c.y) / 2 + abs(b.y - c.y) % 2
+            b11 = a.y + radius1
+            a11 = min(a.x, min(b.x, c.x))
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        (((b.y == c.y) && (a.y != c.y) && (abs(c.y) >= 300))) -> {
+            radius1 = abs(a.y - c.y) / 2 + abs(a.y - c.y) % 2
+            b11 = a.y + radius1
+            a11 = min(a.x, min(b.x, c.x))
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        (((a.x == b.x) && (b.x != c.x) && (abs(a.x) >= 300))) -> {
+            radius1 = abs(b.x - c.x) / 2 + abs(b.x - c.x) % 2
+            b11 = min(a.y, min(b.y, c.y))
+            a11 = a.x + radius1
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        (((a.x == c.x) && (b.x != c.x) && (abs(a.x) >= 300))) -> {
+            radius1 = abs(b.x - c.x) / 2 + abs(b.x - c.x) % 2
+            b11 = min(a.y, min(b.y, c.y))
+            a11 = a.x + radius1
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        (((c.x == b.x) && (a.x != c.x) && (abs(c.x) >= 300))) -> {
+            radius1 = abs(a.x - c.x) / 2 + abs(a.x - c.x) % 2
+            b11 = min(a.y, min(b.y, c.y))
+            a11 = a.x + radius1
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
         else
         -> {
             for (radius in rasnizamin..rasnizamax) {
                 for (b1 in maxy1 - radius - 1..miny1 + 1 + radius) {
                     for (a1 in maxx1 - radius - 1..minx1 + 1 + radius) {
-
                         if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
                                     ((a.y == -a.x + b1 + a1 - radius) && (a.x in a1 - radius..a1)) ||
                                     ((a.y == b1 - radius) && (a.x in a1..a1 + radius)) ||
