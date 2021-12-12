@@ -209,6 +209,10 @@ class Tests {
             mapOf("MSFT" to 150.0, "NFLX" to 45.0),
             averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0, "NFLX" to 50.0))
         )
+        assertEquals(
+            mapOf("MSFT" to 150.0, "NFLX" to 45.0, "NIT" to 30.0),
+            averageStockPrice(listOf("NIT" to 10.0, "MSFT" to 200.0, "NFLX" to 40.0, "NFLX" to 50.0, "MSFT" to 100.0, "NIT" to 50.0))
+        )
     }
 
     @Test
@@ -233,8 +237,10 @@ class Tests {
     @Tag("3")
     fun canBuildFrom() {
         assertFalse(canBuildFrom(emptyList(), "foo"))
-        assertTrue(canBuildFrom(listOf('a', 'b', 'o'), "baobab"))
+        assertTrue(canBuildFrom(listOf('a', 'b', 'o'), "Baobab"))
         assertFalse(canBuildFrom(listOf('a', 'm', 'r'), "Marat"))
+        assertTrue(canBuildFrom(listOf(' '), ""))
+        assertTrue(canBuildFrom(listOf('B'), "B"))
     }
 
     @Test
@@ -326,6 +332,13 @@ class Tests {
             bagPacking(
                 mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
                 850
+            )
+        )
+        assertEquals(
+            setOf("0", "1"),
+            bagPacking(
+                mapOf("0" to (1 to 1), "1" to (1 to 2), "2" to (2 to 2)),
+                2
             )
         )
         assertEquals(

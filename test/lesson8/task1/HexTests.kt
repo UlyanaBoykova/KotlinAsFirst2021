@@ -114,14 +114,14 @@ class HexTests {
     fun hexagonByThreePoints() {
         assertEquals(
             Hexagon(HexPoint(4, 2), 2),
-            hexagonByThreePoints(HexPoint(3, 1), HexPoint(2, 3), HexPoint(4, 4))
+            hexagonByThreePoints(HexPoint(5, 0), HexPoint(2, 4), HexPoint(4, 4))
         )
         assertNull(
             hexagonByThreePoints(HexPoint(3, 1), HexPoint(2, 3), HexPoint(5, 4))
         )
         assertEquals(
-            3,
-            hexagonByThreePoints(HexPoint(2, 3), HexPoint(3, 3), HexPoint(5, 3))?.radius
+            Hexagon(HexPoint(4, 2), 906),
+            hexagonByThreePoints(HexPoint(-558, 479), HexPoint(178, -999), HexPoint(778, 565))
         )
     }
 
