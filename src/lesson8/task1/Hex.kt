@@ -197,14 +197,11 @@ fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> = TODO()
 fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     var a11 = 0
     var b11 = 0
-    var f = false
     var radius1 = 0
     val maxx1 = max(a.x, max(b.x, c.x))
     val minx1 = min(a.x, min(b.x, c.x))
     val maxy1 = max(a.y, max(b.y, c.y))
     val miny1 = min(a.y, min(b.y, c.y))
-    val k = HexPoint(minx1, miny1)
-    val k1 = HexPoint(maxx1, maxy1)
     val rasnizamax =
         max(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)), max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
     val rasnizamin = min(
@@ -251,7 +248,6 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
                                     ((c.x == a1 - radius) && (c.y in b1..b1 + radius)) ||
                                     ((c.x == a1 + radius) && (c.y in b1 - radius..b1)))
                         ) {
-                            f = true
                             a11 = a1
                             b11 = b1
                             radius1 = radius
