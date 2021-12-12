@@ -209,63 +209,71 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
         min(abs(a.x - b.x), min(abs(a.x - c.x), abs(b.x - c.x))),
         min(abs(a.y - b.y), min(abs(a.y - c.y), abs(b.y - c.y)))
     )
-    if ((a == b) && (b == c)) return Hexagon(a, 0)
-    else if ((a == b) && (b != c))
-        return Hexagon(a, max(abs(a.x - c.x) / 2 + abs(a.x - c.x) % 2, abs(a.y - c.y) / 2 + abs(a.y - c.y) % 2))
-    else if ((a == c) && (c != b))
-        return Hexagon(a, max(abs(b.x - c.x) / 2 + abs(b.x - c.x) % 2, abs(b.y - c.y) / 2 + abs(b.y - c.y) % 2))
-    else if ((c == b) && (a != c))
-        return Hexagon(a, max(abs(a.x - c.x) / 2 + abs(a.x - c.x) % 2, abs(a.y - c.y) / 2 + abs(a.y - c.y) % 2))
-    else {
-        for (radius in rasnizamin..rasnizamax) {
-            for (b1 in maxy1 - radius - 2..miny1 + 2 + radius) {
-                for (a1 in maxx1 - radius - 2..minx1 + 2 + radius) {
-                    if (((a.x == b.x) && (b.x == c.x))) {
-                        f = true
-                        radius1 = max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y))
-                        b11 = min(a.y, min(b.y, c.y))
-                        a11 = a.x + radius1
-                        break
-                    }
-                    if (((a.y == b.y) && (b.y == c.y))) {
-                        f = true
-                        radius1 = max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x))
-                        b11 = a.y + radius1
-                        a11 = min(a.x, min(b.x, c.x))
-                        break
-                    }
-                    if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
-                                ((a.y == -a.x + b1 + a1 - radius) && (a.x in a1 - radius..a1)) ||
-                                ((a.y == b1 - radius) && (a.x in a1..a1 + radius)) ||
-                                ((a.y == b1 + radius) && (a.x in a1 - radius..a1)) ||
-                                ((a.x == a1 - radius) && (a.y in b1..b1 + radius)) ||
-                                ((a.x == a1 + radius) && (a.y in b1 - radius..b1))) &&
+    when {
+        ((a == b) && (b == c)) -> return Hexagon(a, 0)
+        ((a == b) && (b != c)) -> return Hexagon(
+            a, max(abs(a.x - c.x) / 2 + 1, abs(a.y - c.y) / 2 + 1)
+        )
+        ((a == c) && (c != b))
+        -> return Hexagon(
+            a, max(abs(b.x - c.x) / 2 + 1, abs(b.y - c.y) / 2 + 1)
+        )
+        ((c == b) && (a != c))
+        ->
+            return Hexagon(
+                a, max(abs(a.x - c.x) / 2 + 1, abs(a.y - c.y) / 2 + 1)
+            )
+        (((a.x == b.x) && (b.x == c.x))) -> {
+            radius1 = max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y))
+            b11 = min(a.y, min(b.y, c.y))
+            a11 = a.x + radius1
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        (((a.y == b.y) && (b.y == c.y))) -> {
+            radius1 = max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x))
+            b11 = a.y + radius1
+            a11 = min(a.x, min(b.x, c.x))
+            return Hexagon(HexPoint(a11, b11), radius1)
+        }
+        else
+        -> {
+            for (radius in rasnizamin..rasnizamax) {
+                for (b1 in maxy1 - radius - 1..miny1 + 1 + radius) {
+                    for (a1 in maxx1 - radius - 1..minx1 + 1 + radius) {
 
-                        (((b.y == -b.x + b1 + a1 + radius) && (b.x in a1..a1 + radius)) ||
-                                ((b.y == -b.x + b1 + a1 - radius) && (b.x in a1 - radius..a1)) ||
-                                ((b.y == b1 - radius) && (b.x in a1..a1 + radius)) ||
-                                ((b.y == b1 + radius) && (b.x in a1 - radius..a1)) ||
-                                ((b.x == a1 - radius) && (b.y in b1..b1 + radius)) ||
-                                ((b.x == a1 + radius) && (b.y in b1 - radius..b1))) &&
+                        if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
+                                    ((a.y == -a.x + b1 + a1 - radius) && (a.x in a1 - radius..a1)) ||
+                                    ((a.y == b1 - radius) && (a.x in a1..a1 + radius)) ||
+                                    ((a.y == b1 + radius) && (a.x in a1 - radius..a1)) ||
+                                    ((a.x == a1 - radius) && (a.y in b1..b1 + radius)) ||
+                                    ((a.x == a1 + radius) && (a.y in b1 - radius..b1))) &&
 
-                        (((c.y == -c.x + b1 + a1 + radius) && (c.x in a1..a1 + radius)) ||
-                                ((c.y == -c.x + b1 + a1 + radius) && (c.x in a1 - radius..a1)) ||
-                                ((c.y == b1 - radius) && (c.x in a1..a1 + radius)) ||
-                                ((c.y == b1 + radius) && (c.x in a1 - radius..a1)) ||
-                                ((c.x == a1 - radius) && (c.y in b1..b1 + radius)) ||
-                                ((c.x == a1 + radius) && (c.y in b1 - radius..b1)))
-                    ) {
-                        f = true
-                        a11 = a1
-                        b11 = b1
-                        radius1 = radius
-                        break
+                            (((b.y == -b.x + b1 + a1 + radius) && (b.x in a1..a1 + radius)) ||
+                                    ((b.y == -b.x + b1 + a1 - radius) && (b.x in a1 - radius..a1)) ||
+                                    ((b.y == b1 - radius) && (b.x in a1..a1 + radius)) ||
+                                    ((b.y == b1 + radius) && (b.x in a1 - radius..a1)) ||
+                                    ((b.x == a1 - radius) && (b.y in b1..b1 + radius)) ||
+                                    ((b.x == a1 + radius) && (b.y in b1 - radius..b1))) &&
+
+                            (((c.y == -c.x + b1 + a1 + radius) && (c.x in a1..a1 + radius)) ||
+                                    ((c.y == -c.x + b1 + a1 + radius) && (c.x in a1 - radius..a1)) ||
+                                    ((c.y == b1 - radius) && (c.x in a1..a1 + radius)) ||
+                                    ((c.y == b1 + radius) && (c.x in a1 - radius..a1)) ||
+                                    ((c.x == a1 - radius) && (c.y in b1..b1 + radius)) ||
+                                    ((c.x == a1 + radius) && (c.y in b1 - radius..b1)))
+                        ) {
+                            f = true
+                            a11 = a1
+                            b11 = b1
+                            radius1 = radius
+                            break
+                        }
                     }
                 }
             }
+            return if (!f) null
+            else Hexagon(HexPoint(a11, b11), radius1)
         }
-        return if (!f) null
-        else Hexagon(HexPoint(a11, b11), radius1)
     }
 }
 
