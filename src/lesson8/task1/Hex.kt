@@ -203,6 +203,8 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     val minx1 = min(a.x, min(b.x, c.x))
     val maxy1 = max(a.y, max(b.y, c.y))
     val miny1 = min(a.y, min(b.y, c.y))
+    val k = HexPoint(minx1, miny1)
+    val k1 = HexPoint(maxx1, maxy1)
     val rasnizamax =
         max(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)), max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
     val rasnizamin = min(
@@ -211,18 +213,6 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     )
     when {
         ((a == b) && (b == c)) -> return Hexagon(a, 0)
-        ((a == b) && (b != c)) -> return Hexagon(
-            a, max(abs(a.x - c.x) / 2 + 1, abs(a.y - c.y) / 2 + 1)
-        )
-        ((a == c) && (c != b))
-        -> return Hexagon(
-            a, max(abs(b.x - c.x) / 2 + 1, abs(b.y - c.y) / 2 + 1)
-        )
-        ((c == b) && (a != c))
-        ->
-            return Hexagon(
-                a, max(abs(a.x - c.x) / 2 + 1, abs(a.y - c.y) / 2 + 1)
-            )
         (((a.x == b.x) && (b.x == c.x))) -> {
             radius1 = max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y))
             b11 = min(a.y, min(b.y, c.y))
@@ -233,42 +223,6 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
             radius1 = max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x))
             b11 = a.y + radius1
             a11 = min(a.x, min(b.x, c.x))
-            return Hexagon(HexPoint(a11, b11), radius1)
-        }
-        (((a.y == b.y) && (b.y != c.y) && (abs(a.y) >= 300))) -> {
-            radius1 = abs(c.y - b.y) / 2 + abs(c.y - b.y) / 2
-            b11 = a.y + radius1
-            a11 = min(a.x, min(b.x, c.x))
-            return Hexagon(HexPoint(a11, b11), radius1)
-        }
-        (((a.y == c.y) && (b.y != c.y) && (abs(a.y) >= 300))) -> {
-            radius1 = abs(b.y - c.y) / 2 + abs(b.y - c.y) % 2
-            b11 = a.y + radius1
-            a11 = min(a.x, min(b.x, c.x))
-            return Hexagon(HexPoint(a11, b11), radius1)
-        }
-        (((b.y == c.y) && (a.y != c.y) && (abs(c.y) >= 300))) -> {
-            radius1 = abs(a.y - c.y) / 2 + abs(a.y - c.y) % 2
-            b11 = a.y + radius1
-            a11 = min(a.x, min(b.x, c.x))
-            return Hexagon(HexPoint(a11, b11), radius1)
-        }
-        (((a.x == b.x) && (b.x != c.x) && (abs(a.x) >= 300))) -> {
-            radius1 = abs(b.x - c.x) / 2 + abs(b.x - c.x) % 2
-            b11 = min(a.y, min(b.y, c.y))
-            a11 = a.x + radius1
-            return Hexagon(HexPoint(a11, b11), radius1)
-        }
-        (((a.x == c.x) && (b.x != c.x) && (abs(a.x) >= 300))) -> {
-            radius1 = abs(b.x - c.x) / 2 + abs(b.x - c.x) % 2
-            b11 = min(a.y, min(b.y, c.y))
-            a11 = a.x + radius1
-            return Hexagon(HexPoint(a11, b11), radius1)
-        }
-        (((c.x == b.x) && (a.x != c.x) && (abs(c.x) >= 300))) -> {
-            radius1 = abs(a.x - c.x) / 2 + abs(a.x - c.x) % 2
-            b11 = min(a.y, min(b.y, c.y))
-            a11 = a.x + radius1
             return Hexagon(HexPoint(a11, b11), radius1)
         }
         else
@@ -301,13 +255,12 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
                             a11 = a1
                             b11 = b1
                             radius1 = radius
-                            break
+                            return Hexagon(HexPoint(a11, b11), radius1)
                         }
                     }
                 }
             }
-            return if (!f) null
-            else Hexagon(HexPoint(a11, b11), radius1)
+            return null
         }
     }
 }
