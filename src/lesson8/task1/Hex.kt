@@ -254,7 +254,7 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
         }
         else
         -> {
-            for (radius in rasnizamin..rasnizamax) {
+            for (radius in rasnizamin + rasnizamin / 2..rasnizamax - rasnizamin / 2) {
                 for (b1 in maxy1 - radius..miny1 + radius) {
                     for (a1 in maxx1 - radius..minx1 + radius) {
                         if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
