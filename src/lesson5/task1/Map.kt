@@ -253,7 +253,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     val map = mutableMapOf<String, String>()
     var n = 0.0
     for ((key, pair) in stuff) {
-        n += pair.second
+        if (n + pair.second >= n) n += pair.second
     }
     for ((key, pair) in stuff) {
         if ((pair.first == kind) && (pair.second <= n)) {
