@@ -179,6 +179,36 @@ fun HexPoint.move(direction: Direction, distance: Int): HexPoint = TODO()
  */
 fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> = TODO()
 
+
+fun neighbours(addresses: List<String>, person: String): List<String> {
+
+    if (person.contains("[^а-яА-Я ]"))
+        throw IllegalArgumentException()
+
+    val personLives = mutableMapOf<String, String>()
+    val inHouseLive = mutableMapOf<String, MutableSet<String>>()
+
+    for (address in addresses) {
+        if (!address.matches("""([а-яА-Я])+ ([а-яА-Я])+ - ([а-яА-Я])+ ([а-я А-Я])+, +\d+, +кв. \d+""".toRegex()))
+            throw IllegalArgumentException()
+        val fields = address.split(", ")
+        val name = fields[0].split("-")[0].trim()
+        val street = fields[0].split("-")[1].trim()
+        val house = fields[1].trim()
+
+        val fullHouse = street + " " + house.filter { it != ' ' }
+        personLives[name] = fullHouse
+        if (inHouseLive[fullHouse]?.add(name) == null)
+            inHouseLive[fullHouse] = mutableSetOf(name)
+    }
+
+    if (personLives[person] == null)
+        return emptyList()
+
+    return inHouseLive[personLives[person]]!!.minus(person).toList()
+}
+
+
 /**
  * Очень сложная (20 баллов)
  *
@@ -205,8 +235,8 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     val rasnizamax =
         max(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)), max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
     val rasnizamin = min(
-        min(abs(a.x - b.x), min(abs(a.x - c.x), abs(b.x - c.x))),
-        min(abs(a.y - b.y), min(abs(a.y - c.y), abs(b.y - c.y)))
+        min(abs(a.x - c.x), min(abs(a.x - b.x), abs(b.x - c.x))),
+        min(abs(a.y - c.y), min(abs(a.y - b.y), abs(b.y - c.y)))
     )
     when {
         ((a == b) && (b == c)) -> return Hexagon(a, 0)
@@ -242,7 +272,7 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
                                     ((b.x == a1 + radius) && (b.y in b1 - radius..b1))) &&
 
                             (((c.y == -c.x + b1 + a1 + radius) && (c.x in a1..a1 + radius)) ||
-                                    ((c.y == -c.x + b1 + a1 + radius) && (c.x in a1 - radius..a1)) ||
+                                    ((c.y == -c.x + b1 + a1 - radius) && (c.x in a1 - radius..a1)) ||
                                     ((c.y == b1 - radius) && (c.x in a1..a1 + radius)) ||
                                     ((c.y == b1 + radius) && (c.x in a1 - radius..a1)) ||
                                     ((c.x == a1 - radius) && (c.y in b1..b1 + radius)) ||
@@ -272,6 +302,5 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
  * Пример: 13, 32, 45, 18 -- шестиугольник радиусом 3 (с центром, например, в 15)
  */
 fun minContainingHexagon(vararg points: HexPoint): Hexagon = TODO()
-
 
 

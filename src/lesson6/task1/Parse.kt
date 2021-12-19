@@ -166,14 +166,14 @@ fun bestHighJump(jumps: String): Int {
         if (jumps[i] != ' ') n += jumps[i]
     }
     for (i in 0..n.length - 1) {
-        when {
-            (n[i] in "0123456789") -> a += n[i]
-            (n[i] == '+') -> {
+        when (n[i]){
+            in "0123456789" -> a += n[i]
+            '+' -> {
                 b = if (a == "") 0
                 else a.toInt()
                 a = ""
             }
-            ((n[i] == ' ') || (n[i] == '%') || (n[i] == '-')) -> {
+            in " %-" -> {
                 b = 0
                 a = ""
             }

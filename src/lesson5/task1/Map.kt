@@ -220,17 +220,15 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     var d = 0.0
     var i = 0
     for (k in stockPrices.indices) {
-        for ((key, value) in stockPrices) {
-            for ((key1, value1) in stockPrices) {
-                if (key == key1) {
-                    i++
-                    d += value1
-                }
+        for (pair in stockPrices) {
+            if (stockPrices[k].first == pair.first) {
+                i++
+                d += pair.second
             }
-            map[key] = d / i
-            d = 0.0
-            i = 0
         }
+        map[stockPrices[k].first] = d / i
+        d = 0.0
+        i = 0
     }
     return map
 }
@@ -252,17 +250,16 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    val l: Int
     val map = mutableMapOf<String, String>()
-    var n = 100000.0
-    var m = ""
-    val v: String
-    for ((i, j) in stuff) {
-        if ((j.second < n) && (j.first == kind)) {
-            n = j.second
-            m = i
+    var n = 0.0
+    for ((key, pair) in stuff) {
+        n += pair.second
+    }
+    for ((key, pair) in stuff) {
+        if ((pair.first == kind) && (pair.second <= n)) {
+            n = pair.second
+            map[kind] = key
         }
-        map[j.first] = m
     }
     return map[kind]
 }
@@ -278,23 +275,18 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     var f: Boolean
-    var i: Int
-    var j: Int
-    var l = ' '
-    var letterSet = mutableSetOf<Char>()
-    var set = mutableSetOf<Char>()
+    var s = ""
+    for (i in chars.indices) {
+        s += chars[i].lowercaseChar()
+    }
     for (letter in word) {
-        letterSet.add(letter.lowercaseChar())
-    }
-    for (i in chars.indices){
-        for (j in 0 until letterSet.toList().size) {
-            if (chars[i].lowercaseChar() == letterSet.toList()[j]) l = chars[i].lowercaseChar()
+        if (letter.lowercaseChar() in s) f = true
+        else {
+            f = false
+            return f
         }
-        if (l == chars[i].lowercaseChar()) set.add(l)
     }
-    f = letterSet == set
-    if (word == "") f = true
-    return f
+    return true
 }
 
 /**

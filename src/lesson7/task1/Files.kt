@@ -555,17 +555,27 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
     }
     vychet = vremenchastnoe * rhv
-    if ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) {
-        m = 1
-        writer.write("$lhv | $rhv")    // первая строка
-        writer.appendLine()
-        for (i in 1 until digitNumber(lhv) - digitNumber(vychet)) {
-            writer.write(" ")
-            m++
+    val pervayzifra = vychet / (10.0.pow((digitNumber(vychet) - 1))).toInt()
+    val pervayzifra1 = lhv / (10.0.pow((digitNumber(lhv) - 1))).toInt()
+    when {
+        ((lhv / rhv < 10) && (digitNumber(vychet) < digitNumber(lhv))) -> {
+            m = 1
+            writer.write("$lhv | $rhv")    // первая строка
+            writer.appendLine()
+            for (i in 1 until digitNumber(lhv) - digitNumber(vychet)) {
+                writer.write(" ")
+                m++
+            }
         }
-    } else {
-        writer.write(" $lhv | $rhv")    // первая строка
-        writer.appendLine()
+        (pervayzifra > pervayzifra1) && (digitNumber(vychet) < digitNumber(lhv)) -> {
+            writer.write("$lhv | $rhv")    // первая строка
+            writer.appendLine()
+            m = 1
+        }
+        else -> {
+            writer.write(" $lhv | $rhv")    // первая строка
+            writer.appendLine()
+        }
     }
     writer.write("-$vychet")
     for (i in 1..koltsifr - digitNumber(vychet) - m + 3) writer.write(" ")
@@ -654,4 +664,40 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
 }
 
+
+
+fun myFunw(examReslts: List<String>, humSubjects: List<String>): List<String> {
+    val list = mutableListOf<String>()
+    var s = ""
+    val map = mutableMapOf<String, String>()
+    var f = false
+    var name = ""
+    for (examReslt in examReslts) {
+        if (!examReslt.matches("""[а-яА-Я]+ [а-яА-Я]+ -(\s[а-яА-Я]+\s+\d,)*\s[а-яА-Я]+\s+\d""".toRegex()))
+            throw IllegalArgumentException()
+        val k = examReslt.split(" - ")
+        name = k[0]
+        val promezut = k[1]
+        val urokozenks = promezut.split(", ")
+        for (urokozenk in urokozenks) {
+            val zz = urokozenk.split(" ")
+            val urok = zz[0]
+            val ozenka = zz[1]
+            if (ozenka in "2345") {
+                map[ozenka] = urok
+            } else throw IllegalArgumentException()
+        }
+
+    }
+    for (i in humSubjects.indices) {
+        s += humSubjects[i]
+    }
+    var l = 0
+    for ((key, value) in map) {
+        if ((key != "3") || ((key != "3") && (value in s) && (l < 1))) f = true
+    }
+    var k = 0
+    if (f) list.add(name)
+    return list
+}
 
