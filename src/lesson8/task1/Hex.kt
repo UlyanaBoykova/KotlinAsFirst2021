@@ -2,6 +2,7 @@
 
 package lesson8.task1
 
+import lesson1.task1.sqr
 import kotlin.math.*
 
 /**
@@ -232,6 +233,10 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     val minx1 = min(a.x, min(b.x, c.x))
     val maxy1 = max(a.y, max(b.y, c.y))
     val miny1 = min(a.y, min(b.y, c.y))
+    val ab = sqrt((sqr(a.x - b.x) + sqr(a.y - b.y)).toDouble())
+    val ac = sqrt((sqr(a.x - c.x) + sqr(a.y - c.y)).toDouble())
+    val bc = sqrt((sqr(b.x - c.x) + sqr(b.y - c.y)).toDouble())
+    val p = (0.5 * (ab + ac + bc)).toInt()
     val rasnizamax =
         max(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)), max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
     val rasnizamin = min(
@@ -254,7 +259,7 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
         }
         else
         -> {
-            for (radius in max(rasnizamin, rasnizamax / 2)..rasnizamax) {
+            for (radius in max(rasnizamin, rasnizamax / 2)..min(p, rasnizamax)) {
                 for (b1 in maxy1 - radius..miny1 + radius) {
                     for (a1 in maxx1 - radius..minx1 + radius) {
                         if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
