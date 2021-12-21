@@ -239,10 +239,8 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
     val p = (ab + ac + bc).toInt()
     val rasnizamax =
         max(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)), max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
-    val rasnizamin = min(
-        min(abs(a.x - c.x), min(abs(a.x - b.x), abs(b.x - c.x))),
-        min(abs(a.y - c.y), min(abs(a.y - b.y), abs(b.y - c.y)))
-    )
+    val rasnizamin = min(max(a.y, max(b.y, c.y)) - min(a.y, min(b.y, c.y)),
+        max(a.x, max(b.x, c.x)) - min(a.x, min(b.x, c.x)))
     when {
         ((a == b) && (b == c)) -> return Hexagon(a, 0)
         (((a.x == b.x) && (b.x == c.x))) -> {
@@ -259,10 +257,7 @@ fun hexagonByThreePoints(a: HexPoint, b: HexPoint, c: HexPoint): Hexagon? {
         }
         else
         -> {
-            for (radius in max(rasnizamin, max(rasnizamax / 2, (p / (4 * sqrt(2.0))).toInt()))..min(
-                rasnizamax,
-                (p / 2).toInt()
-            )) {
+            for (radius in max(rasnizamin, rasnizamax / 2)..rasnizamax) {
                 for (b1 in maxy1 - radius..miny1 + radius) {
                     for (a1 in maxx1 - radius..minx1 + radius) {
                         if ((((a.y == -a.x + b1 + a1 + radius) && (a.x in a1..a1 + radius)) ||
