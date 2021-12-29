@@ -695,6 +695,7 @@ fun robot(inputName: String, hody: String): String {
                 x = xmax
                 y = ymax
                 zvezd++
+                svobodnyemesta[Pair(x, y)] = 1
             }
             if (stroka[i] == '.') {
                 svobodnyemesta[Pair(ymax, xmax)] = 1
