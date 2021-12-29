@@ -670,34 +670,166 @@ fun myFunw(examReslts: List<String>, humSubjects: List<String>): List<String> {
     val list = mutableListOf<String>()
     var s = ""
     val map = mutableMapOf<String, String>()
-    var f = false
+    var f = 0
+    var i = 0
     var name = ""
     for (examReslt in examReslts) {
-        if (!examReslt.matches("""[а-яА-Я]+ [а-яА-Я]+ -(\s[а-яА-Я]+\s+\d,)*\s[а-яА-Я]+\s+\d""".toRegex()))
+        if (!examReslt.matches("""[А-Яа-я]+ [А-Яа-я]+\s.*-(\s.*[А-Яа-я]\s.*[2-5],).*\s.*[А-Яа-я]\s.*[2-5]""".toRegex()))
             throw IllegalArgumentException()
-        val k = examReslt.split(" - ")
-        name = k[0]
-        val promezut = k[1]
+        var k = examReslt.split("-")
+        name = k[0].trim()
+        val promezut = k[1].trim()
         val urokozenks = promezut.split(", ")
         for (urokozenk in urokozenks) {
             val zz = urokozenk.split(" ")
-            val urok = zz[0]
-            val ozenka = zz[1]
-            if (ozenka in "2345") {
-                map[ozenka] = urok
-            } else throw IllegalArgumentException()
+            val urok = zz[0].trim()
+            val ozenka = zz[1].trim()
+            if (((ozenka == "3") && (urok in humSubjects))) f++
+            if ((ozenka == "3") && (urok !in humSubjects)) i++
         }
-
+        if ((f <= 1) && (i == 0)) list += name
+        f = 0
+        i = 0
     }
-    for (i in humSubjects.indices) {
-        s += humSubjects[i]
-    }
-    var l = 0
-    for ((key, value) in map) {
-        if ((key != "3") || ((key != "3") && (value in s) && (l < 1))) f = true
-    }
-    var k = 0
-    if (f) list.add(name)
     return list
 }
 
+
+
+
+fun shashki(state: String, move: String): String {
+    val k = state.split("\n")
+    var otvet = ""
+    var i1 = 0
+    var i2 = 0
+    var j1 = 0
+    var j2 = 0
+    val l = move.split("-")
+    val pervhod = l[0]
+    val vtorhod = l[1]
+    val bukva1 = pervhod[0]
+    val zifra1 = pervhod[1]
+    val bukva2 = vtorhod[0]
+    val zifra2 = vtorhod[1]
+    when (bukva1) {
+        'A' -> j1 = 1
+        'B' -> j1 = 2
+        'C' -> j1 = 3
+        'D' -> j1 = 4
+        'E' -> j1 = 5
+        'F' -> j1 = 6
+        'G' -> j1 = 7
+        'H' -> j1 = 8
+    }
+    when (zifra1) {
+        '8' -> i1 = 1
+        '7' -> i1 = 2
+        '6' -> i1 = 3
+        '5' -> i1 = 4
+        '4' -> i1 = 5
+        '3' -> i1 = 6
+        '2' -> i1 = 7
+        '1' -> i1 = 8
+    }
+    when (bukva2) {
+        'A' -> j2 = 1
+        'B' -> j2= 2
+        'C' -> j2 = 3
+        'D' -> j2 = 4
+        'E' -> j2 = 5
+        'F' -> j2 = 6
+        'G' -> j2 = 7
+        'H' -> j2 = 8
+    }
+    when (zifra2) {
+        '8' -> i2 = 1
+        '7' -> i2 = 2
+        '6' -> i2 = 3
+        '5' -> i2 = 4
+        '4' -> i2 = 5
+        '3' -> i2 = 6
+        '2' -> i2 = 7
+        '1' -> i2 = 8
+    }
+    var belcher = 'e'
+    for (i in k.indices){
+        val s = k[i]
+        for (j in s.indices) {
+            if ((i1 == i + 1) && (j1 == j + 1)) {
+                belcher = s[j]
+                if (belcher == 'e') throw IllegalArgumentException()
+            }
+            if ((i2 == i + 1) && (j2 == j + 1)) {
+                if (s[j] != 'e') throw IllegalArgumentException()
+            }
+            when {
+                ((i + 1 == i1) && (j + 1 == j1)) -> otvet += "e"
+                ((i + 1 == i2) && (j + 1 == j2)) -> otvet += belcher
+                ((i + 1 != i1) && (j + 1 != j1) && (i + 1 != i2) && (j + 1 != j2) &&
+                        (j + 1 in min(j1, j2)..max(j1, j2)) && (s[j] != belcher) &&
+                        ((i + 1 - i1) / (i2 - i1) == (j + 1 - j1) / (j2 - j1))
+                        ) -> otvet += "e"
+                ((i + 1 != i1) && (j + 1 != j1) && (i + 1 != i2) && (j + 1 != j2) &&
+                        (j + 1 in min(j1, j2)..max(j1, j2)) && ((s[j] == belcher) || (s[j] == ' ')) &&
+                        ((i + 1 - i1) / (i2 - i1) == (j + 1 - j1) / (j2 - j1))
+                        ) -> throw IllegalArgumentException()
+                else -> otvet += s[j]
+            }
+        }
+        if (i != k.size - 1) otvet += "\n"
+    }
+    return otvet
+}
+
+
+
+
+
+
+
+
+
+
+
+
+fun robot(inputName: String, hody: String): String {
+    var zvezd = 0
+    var xmax = 0
+    var xmax1 = 0
+    var ymax = 0
+    var x = 0
+    var y = 0
+    val svobodnyemesta = mutableMapOf<Pair<Int, Int>, Int>()
+    for (stroka in File(inputName).readLines()) {
+        ymax++
+        if (!stroka.matches("""([.*#]*)""".toRegex()))
+            throw IllegalArgumentException()
+        for (i in stroka.indices) {
+            xmax++
+            if (stroka[i] == '*') {
+                x = xmax
+                y = ymax
+                zvezd++
+            }
+            if (stroka[i] == '.') {
+                svobodnyemesta[Pair(ymax, xmax)] = 1
+            }
+        }
+        if ((ymax != 1) && (xmax1 != xmax)) return "-1"
+        if (zvezd > 1) return "-1"
+        xmax1 = xmax
+        xmax = 0
+    }
+    if (!hody.matches("""[ldur]*""".toRegex()))
+        throw IllegalArgumentException()
+    for (i in hody.indices) {
+        when {
+            (hody[i] == 'l') && (svobodnyemesta[Pair(y, x - 1)] == 1) -> x -= 1
+            (hody[i] == 'r') && (svobodnyemesta[Pair(y, x + 1)] == 1) -> x += 1
+            (hody[i] == 'u') && (svobodnyemesta[Pair(y - 1, x)] == 1) -> y -= 1
+            (hody[i] == 'd') && (svobodnyemesta[Pair(y + 1, x)] == 1) -> y += 1
+        }
+    }
+    val y1 = ymax - y + 1
+    return "по горизонтали(x): $x, по вертикали(y): $y1"
+}
