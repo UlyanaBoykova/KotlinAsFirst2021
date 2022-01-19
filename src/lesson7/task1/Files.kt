@@ -677,45 +677,56 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
 
 
-fun robot(inputName: String, hody: String): String {
-    var zvezd = 0
-    var xmax = 0
-    var xmax1 = 0
-    var ymax = 0
+fun robot(inputName: String, moves: String): String {
+    var asterisks = 0
     var x = 0
     var y = 0
-    val svobodnyemesta = mutableMapOf<Pair<Int, Int>, Int>()
-    for (stroka in File(inputName).readLines()) {
-        ymax++
-        if (!stroka.matches("""([.*#]*)""".toRegex()))
+    val freecells = mutableMapOf<Pair<Int, Int>, Int>()
+    val text = File(inputName).readLines()
+    for ((index1, line) in File(inputName).readLines().withIndex()) {
+        if (!line.matches("""([.*#]*)""".toRegex()))
             throw IllegalArgumentException()
-        for (i in stroka.indices) {
-            xmax++
-            if (stroka[i] == '*') {
-                x = xmax
-                y = ymax
-                zvezd++
-                svobodnyemesta[Pair(x, y)] = 1
+        for ((index, value) in line.withIndex()) {
+            if (value == '*') {
+                x = index + 1
+                y = index1 + 1
+                asterisks++
+                freecells[Pair(x, y)] = 1
             }
-            if (stroka[i] == '.') {
-                svobodnyemesta[Pair(ymax, xmax)] = 1
+            if (value == '.') {
+                freecells[Pair(index1 + 1, index + 1)] = 1
             }
         }
-        if ((ymax != 1) && (xmax1 != xmax)) return "-1"
-        if (zvezd > 1) return "-1"
-        xmax1 = xmax
-        xmax = 0
+        if ((index1 in text.indices) && (text[index1].length != text[0].length)) return "-1"
+        if (asterisks > 1) return "-1"
     }
-    if (!hody.matches("""[ldur]*""".toRegex()))
+    if (!moves.matches("""[ldur]*""".toRegex()))
         throw IllegalArgumentException()
-    for (i in hody.indices) {
+    for (i in moves.indices) {
         when {
-            (hody[i] == 'l') && (svobodnyemesta[Pair(y, x - 1)] == 1) -> x -= 1
-            (hody[i] == 'r') && (svobodnyemesta[Pair(y, x + 1)] == 1) -> x += 1
-            (hody[i] == 'u') && (svobodnyemesta[Pair(y - 1, x)] == 1) -> y -= 1
-            (hody[i] == 'd') && (svobodnyemesta[Pair(y + 1, x)] == 1) -> y += 1
+            (moves[i] == 'l') && (freecells[Pair(y, x - 1)] == 1) -> x -= 1
+            (moves[i] == 'r') && (freecells[Pair(y, x + 1)] == 1) -> x += 1
+            (moves[i] == 'u') && (freecells[Pair(y - 1, x)] == 1) -> y -= 1
+            (moves[i] == 'd') && (freecells[Pair(y + 1, x)] == 1) -> y += 1
         }
     }
-    val y1 = ymax - y + 1
+    val y1 = text.size + 1 - y
     return "по горизонтали(x): $x, по вертикали(y): $y1"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

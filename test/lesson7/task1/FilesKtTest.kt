@@ -10,7 +10,7 @@ internal class FilesKtTest {
 
 
 
-    @Test
+@Test
     fun robot() {
         assertEquals("по горизонтали(x): 1, по вертикали(y): 9", robot("input/robot.txt", "dldrdllldlddrrurrdddlllllluu"))
         assertEquals("по горизонтали(x): 3, по вертикали(y): 4", robot("input/robot1.txt", "urddllurruurddd"))
